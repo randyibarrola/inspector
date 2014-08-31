@@ -1,0 +1,188 @@
+dashboard_cargar_imagenes:
+    pattern:  /cargar/imagenes/extras
+    defaults: { _controller: DashboardBundle:Paciente:renderImagenesExtras } 
+
+dashboard_resetear_turno:
+    pattern:  /resetear/turnero
+    defaults: { _controller: DashboardBundle:Default:resetearTurnero } 
+
+dashboard_carga_turnos:
+    pattern:  /carga/turnos
+    defaults: { _controller: DashboardBundle:Default:cargaTurnos } 
+    
+dashboard_turnos:
+    pattern:  /lista/turnos
+    defaults: { _controller: DashboardBundle:Default:listTurnos }     
+    
+dashboard_imprimir_turno:
+    pattern:  /imprimir/turno/{id}
+    defaults: { _controller: DashboardBundle:Default:imprimir }       
+
+
+dashboard_login:
+    pattern:  /login
+    defaults: { _controller: DashboardBundle:User:login }
+
+dashboard_login_check:
+    pattern:  /login_check
+
+dashboard_logout:
+    pattern:  /logout
+
+dashboard_usuario:
+    pattern:  /usuario
+    defaults: { _controller: DashboardBundle:User:list }    
+  
+
+dashboard_usuario_cambiar_estado:
+    pattern:  /usuario/cambiar-estado/{id}
+    defaults: { _controller: DashboardBundle:User:changeState }
+    requirements:
+        id: \d+
+        
+dashboard_usuario_nuevo:
+    pattern:  /usuario/nuevo
+    defaults: { _controller: DashboardBundle:User:new }
+    
+dashboard_usuario_editar:
+    pattern:  /usuario/editar/{id}
+    defaults: { _controller: DashboardBundle:User:edit }
+    requirements:
+        id: \d+    
+
+
+dashboard_usuario_ver:
+    pattern:  /usuario/ver/{id}
+    defaults: { _controller: DashboardBundle:User:view }
+    requirements:
+        id: \d+
+
+dashboard_usuario_eliminar:
+    pattern:  /usuario/eliminar/{id}
+    defaults: { _controller: DashboardBundle:User:delete }
+    requirements:
+        id: \d+
+        
+dashboard_paciente_buscador:
+    pattern:  /paciente/buscador
+    defaults: { _controller: DashboardBundle:Paciente:buscador }  
+    
+dashboard_detalle_paciente_buscador:
+    pattern:  /paciente/detalle/buscador
+    defaults: { _controller: DashboardBundle:Paciente:detalle }      
+
+dashboard_paciente:
+    pattern:  /paciente
+    defaults: { _controller: DashboardBundle:Paciente:list }
+    
+dashboard_paciente_nuevo:
+    pattern:  /paciente/nuevo
+    defaults: { _controller: DashboardBundle:Paciente:new }
+
+
+dashboard_paciente_ver:
+    pattern:  /paciente/ver/{id}
+    defaults: { _controller: DashboardBundle:Paciente:view }
+    requirements:
+        id: \d+
+        
+dashboard_paciente_editar:
+    pattern:  /paciente/editar/{id}
+    defaults: { _controller: DashboardBundle:Paciente:edit }
+    requirements:
+        id: \d+        
+
+dashboard_paciente_eliminar:
+    pattern:  /paciente/eliminar/{id}
+    defaults: { _controller: DashboardBundle:Paciente:delete }
+    requirements:
+        id: \d+
+        
+dashboard_medico:
+    pattern:  /medico
+    defaults: { _controller: DashboardBundle:Medico:list } 
+    
+dashboard_medico_nuevo:
+    pattern:  /medico/nuevo
+    defaults: { _controller: DashboardBundle:Medico:new }
+    
+dashboard_medico_turnos:
+    pattern:  /medico/turnos/{id}
+    defaults: { _controller: DashboardBundle:Medico:turnos }
+    requirements:
+        id: \d+     
+
+
+dashboard_medico_ver:
+    pattern:  /medico/ver/{id}
+    defaults: { _controller: DashboardBundle:Medico:view }
+    requirements:
+        id: \d+  
+        
+dashboard_medico_editar:
+    pattern:  /medico/editar/{id}
+    defaults: { _controller: DashboardBundle:Medico:edit }
+    requirements:
+        id: \d+        
+
+dashboard_medico_eliminar:
+    pattern:  /medico/eliminar/{id}
+    defaults: { _controller: DashboardBundle:Medico:delete }
+    requirements:
+        id: \d+        
+
+dashboard_categoria:
+    pattern:  /categoria
+    defaults: { _controller: DashboardBundle:Categoria:list }
+
+dashboard_categoria_nuevo:
+    pattern:  /categoria/nuevo
+    defaults: { _controller: DashboardBundle:Categoria:new }
+
+dashboard_categoria_editar:
+    pattern:  /categoria/editar/{id}
+    defaults: { _controller: DashboardBundle:Categoria:edit }
+    requirements:
+        id: \d+
+
+dashboard_categoria_eliminar:
+    pattern:  /categoria/eliminar/{id}
+    defaults: { _controller: DashboardBundle:Categoria:delete }
+    requirements:
+        id: \d+
+
+dashboard_categoria_ver:
+    pattern:  /categoria/ver/{id}
+    defaults: { _controller: DashboardBundle:Categoria:view }
+    requirements:
+        id: \d+
+
+dashboard_candidato:
+    pattern:  /candidato
+    defaults: { _controller: DashboardBundle:Candidato:list }
+
+dashboard_candidato_nuevo:
+    pattern:  /candidato/nuevo
+    defaults: { _controller: DashboardBundle:Candidato:new }
+
+dashboard_candidato_editar:
+    pattern:  /candidato/editar/{id}
+    defaults: { _controller: DashboardBundle:Candidato:edit }
+    requirements:
+        id: \d+
+
+dashboard_candidato_eliminar:
+    pattern:  /candidato/eliminar/{id}
+    defaults: { _controller: DashboardBundle:Candidato:delete }
+    requirements:
+        id: \d+
+
+dashboard_candidato_ver:
+    pattern:  /candidato/ver/{id}
+    defaults: { _controller: DashboardBundle:Candidato:view }
+    requirements:
+        id: \d+
+
+dashboard_hompage:
+    pattern:  /
+    defaults: { _controller: DashboardBundle:Default:index }

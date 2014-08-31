@@ -1,0 +1,82 @@
+
+{% extends '::dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ 'Listado de categorías' | trans }}{% endblock %}
+{% block plugins_stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/select2_metro.css') }}" />
+    <link rel="stylesheet" href="{{ asset('plugins/data-tables/DT_bootstrap.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-ui/jquery-ui-1.10.1.custom.min.css') }}"/>
+{% endblock %}
+{% block plugins_javascript %}
+    <script type="text/javascript" src="{{ asset('plugins/select2/select2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/data-tables/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/data-tables/jquery.zeroClipboard.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/data-tables/jquery.tableTools.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/data-tables/DT_bootstrap.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/data-tables/lang/jquery-datatable.' ~ app.request.locale ~ '.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/data-tables/jquery.datatable.filter.js') }}"></script>
+{% endblock %}
+{% block level_javascript %}
+    {{ parent() }}
+    <script src="{{ asset('js/dashboard/table-advanced.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/dashboard/buscador.js') }}" type="text/javascript"></script>
+{% endblock %}
+{% block init_javascript %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            urlDetalleUsuario = '{{ path('dashboard_detalle_paciente_buscador') }}';
+        });
+    </script>
+{% endblock %}
+{% block page_title %}{{ 'Carga de turnos' | trans }} <small>{{ "now"|date("d/m/Y") }}</small>{% endblock %}
+{% block breadcrumb_list %}
+    {{ parent() }}    
+    <li>
+        <i class="icon-list"></i>
+        {{ 'Carga de Turnos' | trans }}
+    </li>
+
+{% endblock %}
+
+{% block level_content %}
+    <div class="portlet box purple view-container" id="view-usuario">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-group"></i>{{ 'Resetear Turnos' | trans }}</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+            <div class="actions">
+                <a class="btn purple table-actions-new block-portlet" href="{{ path('dashboard_turnos') }}">
+                    <i class="icon-list"></i> <span class="hidden-phone">{{ 'Regresar al listado de turnos' | trans }}</span>
+                </a>           
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <!-- BEGIN FORM-->
+            <form action="{{ path('dashboard_resetear_turno')  }}" method="post" enctype="multipart/form-data">
+            <div class="form-horizontal form-view">
+                {% if turnero is not null %}
+                    <label for="" class="control-label bold">
+                        {{ "Valor turnero actual: "~turnero.numero }}
+                    </label>
+                {% else %}
+                    <label for="" class="control-label bold">
+                        {{ "No se ha creado turnero para hoy " }}
+                    </label>
+                {% endif %}
+                <div class="controls">
+                    <input type="number" id="valor" name="valor"   class="form-control required input-small">
+                    <button type="submit" class="btn btn-primary">Resetear</button>
+                </div>                
+                
+                
+            </div>
+            </form>
+            <!-- END FORM-->
+
+        </div>
+    </div>    
+   
+{% endblock %}
+

@@ -1,0 +1,123 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ (obj.id is not null ? 'Editar categoría' : 'Añadir categoría') | trans ~ (obj.id is not null ? ' ' ~ obj.nombre : '') }}{% endblock %}
+{% block plugins_stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/select2_metro.css') }}" />
+{% endblock %}
+{% block plugins_javascript %}
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/lib/jquery.form.js') }}"></script>
+    {% if app.request.locale != 'en' %}
+        <script type="text/javascript" src="{{ asset('plugins/jquery-validation/localization/messages_' ~ app.request.locale ~ '.js') }}"></script>
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/select2/select2.min.js') }}"></script>
+{% endblock %}
+{% block level_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/dashboard/form.js') }}"></script>
+{% endblock %}
+{% block init_javascript %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            Form.init();
+
+            $('.imagen_categoria').eq(0).change(function() {
+                $('#widget_imagen_delete').val($(this).val().trim().length > 0 ? '0' : '1');
+            });
+        });
+    </script>
+{% endblock %}
+{% block page_title %}{{ 'Tipo Afiliado' | trans }} <small>{{ obj.id is not null ? 'editar' | trans : 'añadir nuevo' | trans }}</small>{% endblock %}
+{% block breadcrumb_list %}
+    {{ parent() }}
+    <li>
+        <i class="icon-sitemap"></i>
+        <a href="{{ path('dashboard_categoria') }}">{{ 'Tipos Afiliados' | trans }}</a>
+        <span class="icon-angle-right"></span>
+    </li>
+    <li>
+        <i class="{{ obj.id is not null ? 'icon-edit' | trans : 'icon-plus' | trans }}"></i>
+        {{ obj.id is not null ? 'Editar' | trans : 'Añadir nuevo' | trans }}
+    </li>
+{% endblock %}
+
+{% block level_content %}
+    <div class="portlet box purple">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-sitemap"></i>{{ 'Formulario de tipo de afiliado' | trans }}</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+            <div class="actions">
+                <a class="btn purple block-portlet" href="{{ path('dashboard_categoria') }}"><i class="icon-list"></i> <span class="hidden-480">{{ 'Regresar al listado' | trans }}</span></a>
+                {% if obj.id is not null %}
+                    <a class="btn green block-portlet" href="{{ path('dashboard_categoria_ver', { 'id': obj.id }) }}"><i class="icon-file"></i> <span class="hidden-480">{{ 'Ver' | trans }}</span></a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form class="horizontal-form form-validate ajax-form {% if obj.id is null %}form_new{% endif %}" action="{{ obj.id is not null ? path('dashboard_categoria_editar', { 'id': obj.id }) : path('dashboard_categoria_nuevo') }}" method="post" {{ form_enctype(form) }}>
+                <div class="span6 pull-right">
+                    <div class="alert-validation alert hide">
+                        <div class="alert-message">{{ 'Existen datos incorrectos en el formulario' | trans }}</div>
+                    </div>
+                </div>
+                <h3 class="form-section">{{ obj.id is null ? 'Añadir nueva afiliación' | trans : 'Editar categoría' | trans }}</h3>
+                <div class="row-fluid">
+                    <div class="span6 ">
+                         <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Nombre de la afiliación' | trans }}                                
+                            </label>
+                            <div class="controls">
+                                {% for key,idioma in idiomas %}
+                                    {% if key == default_locale %}
+                                        {{ form_widget(form.nombre, {'attr': {'data-locale': key, 'class': 'm-wrap span11 nombre_categoria validate-icon', 'placeholder': 'Nombre de la afiliación' | trans}}) }}
+                                    {% else %}
+                                        <input type="text" name="translate_nombre[{{ key }}]" data-locale="{{ key }}" class="m-wrap span11 nombre_categoria" placeholder="{{ 'Nombre de la afiliación' | trans }}" style="display: none" value="{{ (key in i18n | keys) and i18n[key]['nombre'] is defined ? i18n[key]['nombre'] : ''}}" />
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Descripción de la categoría' | trans }}
+                            </label>
+                            <div class="controls">
+                                {% for key,idioma in idiomas %}
+                                    {% if key == default_locale %}
+                                        {{ form_widget(form.descripcion, {'attr': {'data-locale': key, 'class': 'm-wrap span11 descripcion_categoria', 'placeholder': 'Descripción de la afiliación' | trans, 'rows': '3'}}) }}
+                                    {% else %}
+                                        <textarea name="translate_descripcion[{{ key }}]" data-locale="{{ key }}" rows="3" class="m-wrap span11 descripcion_categoria" placeholder="{{ 'Descripción de la afiliación' | trans }}" style="display: none">{{ (key in i18n | keys) and i18n[key]['descripcion'] is defined ? i18n[key]['descripcion'] | trim : ''}}</textarea>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                    <div class="span6 ">
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Cantidad de imágenes' | trans }}
+                            </label>
+                            <div class="controls">
+                                {{ form_widget(form.cantidad_imagenes, {'attr': {'class': 'span11 ', 'placeholder': 'Cantidad de imágenes' | trans, 'tabindex': '1'}}) }}
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <!--/row-->
+                {{ form_rest(form) }}
+                <div class="form-actions">
+                    <button class="btn purple" type="submit"><i class="icon-ok"></i> {{ 'Guardar' | trans }}</button>
+                    <a class="btn block-portlet" href="{{ path('dashboard_categoria') }}">{{ 'Cancelar' | trans }}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

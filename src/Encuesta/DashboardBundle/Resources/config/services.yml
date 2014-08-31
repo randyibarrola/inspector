@@ -1,0 +1,17 @@
+parameters:
+#    dashboard.example.class: Encuesta\DashboardBundle\Example
+
+services:
+    dashboard.ajaxresponse:
+        class: Encuesta\DashboardBundle\Util\AjaxResponse
+        calls:
+            - [ setTranslator, [@translator] ]
+    dashboard.ajaxformresponse:
+        class: Encuesta\DashboardBundle\Util\AjaxFormResponse
+        calls:
+            - [ setTranslator, [@translator] ]
+    dashboard.file:
+        class: Encuesta\DashboardBundle\Util\File
+    dashboard.entity:
+        class: Encuesta\DashboardBundle\Util\Entity
+        arguments: [@doctrine.orm.entity_manager]

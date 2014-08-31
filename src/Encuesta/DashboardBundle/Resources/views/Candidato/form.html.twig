@@ -1,0 +1,163 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ (obj.id is not null ? 'Editar candidato' : 'Añadir candidato') | trans ~ (obj.id is not null ? ' ' ~ obj.titulo : '') }}{% endblock %}
+{% block plugins_stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/select2_metro.css') }}" />
+{% endblock %}
+{% block plugins_javascript %}
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/lib/jquery.form.js') }}"></script>
+    {% if app.request.locale != 'en' %}
+        <script type="text/javascript" src="{{ asset('plugins/jquery-validation/localization/messages_' ~ app.request.locale ~ '.js') }}"></script>
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/select2/select2.min.js') }}"></script>
+{% endblock %}
+{% block level_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/dashboard/form.js') }}"></script>
+{% endblock %}
+{% block init_javascript %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            Form.init();
+
+            $('.imagen_candidato').eq(0).change(function() {
+                $('#widget_imagen_delete').val($(this).val().trim().length > 0 ? '0' : '1');
+            });
+        });
+    </script>
+{% endblock %}
+{% block page_title %}{{ 'Candidatos' | trans }} <small>{{ obj.id is not null ? 'editar' | trans : 'añadir nuevo' | trans }}</small>{% endblock %}
+{% block breadcrumb_list %}
+    {{ parent() }}
+    <li>
+        <i class="icon-star"></i>
+        <a href="{{ path('dashboard_candidato') }}">{{ 'Candidatos' | trans }}</a>
+        <span class="icon-angle-right"></span>
+    </li>
+    <li>
+        <i class="{{ obj.id is not null ? 'icon-edit' | trans : 'icon-plus' | trans }}"></i>
+        {{ obj.id is not null ? 'Editar' | trans : 'Añadir nuevo' | trans }}
+    </li>
+{% endblock %}
+
+{% block level_content %}
+    <div class="portlet box green">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-star"></i>{{ 'Formulario de candidato' | trans }}</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+            <div class="actions">
+                <a class="btn green block-portlet" href="{{ path('dashboard_candidato') }}"><i class="icon-list"></i> <span class="hidden-480">{{ 'Regresar al listado' | trans }}</span></a>
+                {% if obj.id is not null %}
+                    <a class="btn green block-portlet" href="{{ path('dashboard_candidato_ver', { 'id': obj.id }) }}"><i class="icon-file"></i> <span class="hidden-480">{{ 'Ver' | trans }}</span></a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form class="horizontal-form form-validate ajax-form {% if obj.id is null %}form_new{% endif %}" action="{{ obj.id is not null ? path('dashboard_candidato_editar', { 'id': obj.id }) : path('dashboard_candidato_nuevo') }}" method="post" {{ form_enctype(form) }}>
+                <div class="span6 pull-right">
+                    <div class="alert-validation alert hide">
+                        <div class="alert-message">{{ 'Existen datos incorrectos en el formulario' | trans }}</div>
+                    </div>
+                </div>
+                <h3 class="form-section">{{ 'Añadir nuevo candidato' | trans }}</h3>
+                <div class="row-fluid">
+                    <div class="span6 ">
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Seleccione el idioma' | trans }}
+                            </label>
+                            <div class="controls">
+                                <select class="span11 select2 select_translate" data-for="titulo_candidato,descripcion_candidato" data-placeholder="{{ 'Seleccione el idioma' | trans }}" tabindex="1">
+                                    {% for key, idioma in idiomas %}
+                                        <option value="{{key}}" {% if key == default_locale %}selected="selected"{% endif %}>{{idioma}}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="help-block">{{ 'Introduce el título y la descripción en diferentes idiomas' | trans }}</span>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Título del candidato' | trans }}
+                                <span class="required">(* {{ 'Requerido al menos en' | trans }} {{ idiomas[default_locale] }})</span>
+                            </label>
+                            <div class="controls">
+                                {% for key,idioma in idiomas %}
+                                    {% if key == default_locale %}
+                                        {{ form_widget(form.titulo, {'attr': {'data-locale': key, 'class': 'm-wrap span11 titulo_candidato validate-icon', 'placeholder': 'Título del candidato' | trans}}) }}
+                                    {% else %}
+                                        <input type="text" name="translate_titulo[{{ key }}]" data-locale="{{ key }}" class="m-wrap span11 titulo_candidato" placeholder="{{ 'Título del candidato' | trans }}" style="display: none" value="{{ (key in i18n | keys) and i18n[key]['titulo'] is defined ? i18n[key]['titulo'] : ''}}" />
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Descripción del candidato' | trans }}
+                            </label>
+                            <div class="controls">
+                                {% for key,idioma in idiomas %}
+                                    {% if key == default_locale %}
+                                        {{ form_widget(form.descripcion, {'attr': {'data-locale': key, 'class': 'm-wrap span11 descripcion_candidato', 'placeholder': 'Descripción del candidato' | trans, 'rows': '3'}}) }}
+                                    {% else %}
+                                        <textarea name="translate_descripcion[{{ key }}]" data-locale="{{ key }}" rows="3" class="m-wrap span11 descripcion_candidato" placeholder="{{ 'Descripción del candidato' | trans }}" style="display: none">{{ (key in i18n | keys) and i18n[key]['descripcion'] is defined ? i18n[key]['descripcion'] | trim : ''}}</textarea>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!--/span-->
+                    <div class="span6 ">
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Categoría' | trans }}
+                            </label>
+                            <div class="controls">
+                                {{ form_widget(form.categoria, {'attr': {'class': 'span11 select2', 'placeholder': 'Categoría' | trans, 'tabindex': '1'}}) }}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label">{{ 'Imagen del candidato' | trans }}</label>
+                            <div class="controls">
+                                <div class="fileupload {{ obj.imagen is null ? 'fileupload-new' : 'fileupload-exists' }}" data-provides="fileupload">
+                                    <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
+                                        {% if obj.imagen is null %}
+                                            <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text={{ 'sin+imagen' | trans }}" alt="" />
+                                        {% endif %}
+                                    </div>
+                                    <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;">
+                                        {% if obj.id is not null and obj.imagen is not null %}
+                                            <img src="{{ asset(upload_dir | slice(1) ~ 'candidato/' ~ obj.id ~ '/' ~ obj.imagen) }}" alt="{{ obj.titulo }}" />
+                                        {% endif %}
+                                    </div>
+                                    <span class="help-block" style="display: block;">{{ 'Solo se permiten imágenes de hasta 500Kb' | trans }}</span>
+                                    <div>
+                                        <span class="btn btn-file">
+                                            <span class="fileupload-new mini">{{ 'Seleccionar' | trans }}</span>
+                                            <span class="fileupload-exists mini">{{ 'Cambiar' | trans }}</span>
+                                            {{ form_widget(form.imagen, {'attr': {'class': 'default imagen_candidato'}}) }}
+                                            <input type="hidden" id="widget_imagen_delete" name="imagen_delete" value="0" />
+                                        </span>
+                                        <a href="#" class="btn fileupload-exists" data-dismiss="fileupload">{{ 'Eliminar' | trans }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/row-->
+                {{ form_rest(form) }}
+                <div class="form-actions">
+                    <button class="btn green" type="submit"><i class="icon-ok"></i> {{ 'Guardar' | trans }}</button>
+                    <a class="btn block-portlet" href="{{ path('dashboard_candidato') }}">{{ 'Cancelar' | trans }}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

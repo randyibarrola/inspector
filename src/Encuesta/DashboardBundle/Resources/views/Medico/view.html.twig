@@ -1,0 +1,150 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ 'Ver información de médico' | trans ~ '. ' ~ obj.nombreCompleto }}{% endblock %}
+{% block plugins_stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-ui/jquery-ui-1.10.1.custom.min.css') }}"/>
+{% endblock %}
+
+{% block level_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/dashboard/view.js') }}"></script>
+{% endblock %}
+{% block init_javascript %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            View.init();
+        });
+    </script>
+{% endblock %}
+{% block page_title %}{{ 'Pacientes' | trans }} <small>{{ 'ver información' | trans }}</small>{% endblock %}
+{% block breadcrumb_list %}
+    {{ parent() }}
+    <li>
+        <i class="icon-group"></i>
+        <a href="{{ path('dashboard_paciente') }}">{{ 'Médico' | trans }}</a>
+        <span class="icon-angle-right"></span>
+    </li>
+    <li>
+        <i class="icon-file"></i>
+        {{ 'Ver información' | trans }}
+    </li>
+{% endblock %}
+
+{% block level_content %}
+    <div class="portlet box blue view-container" id="view-usuario">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-group"></i>{{ 'Información de médico' | trans }}</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+            <div class="actions">
+                <a class="btn blue table-actions-new block-portlet" href="{{ path('dashboard_medico') }}">
+                    <i class="icon-list"></i> <span class="hidden-phone">{{ 'Regresar al listado' | trans }}</span>
+                </a>                
+                <a class="btn blue table-actions-new view-btn-delete-object ajax-btn" href="{{ path('dashboard_medico_eliminar', { 'id': obj.id }) }}">
+                    <i class="icon-trash"></i> <span class="hidden-phone">{{ 'Eliminar' | trans }}</span>
+                </a>                
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <!-- BEGIN FORM-->
+            <div class="form-horizontal form-view">
+                <h3 class="hidden-phone"> {{ 'Ver información de médico' | trans ~ ' - ' ~ obj.nombreCompleto }} </h3>
+                <!--BEGIN TABS-->
+                <div class="tabbable tabbable-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#tib" data-toggle="tab"><i class="icon-info-sign"></i> <span class="hidden-480">{{ 'Información básica' | trans }}</span></a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tib">
+                            <h4 class="form-section visible-phone hidden-tablet hidden-desktop">{{ 'Información básica' | trans }}</h4>
+                            <div class="row-fluid">
+                                <div class="span6 ">
+                                    <div class="control-group">
+                                        <label for="" class="control-label bold">
+                                            {{ 'Nombre:' | trans }}
+                                        </label>
+                                        <div class="controls">
+                                            <span class="text">{{ obj.nombre | default('-') }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label for="" class="control-label bold">
+                                            {{ 'Apellidos:' | trans }}
+                                        </label>
+                                        <div class="controls">
+                                            <span class="text">{{ obj.apellidos | default('-') }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label for="" class="control-label bold">
+                                            {{ 'Especialidad:' | trans }}
+                                        </label>
+                                        <div class="controls">
+                                            <span class="text">{{ obj.especialidad | default('-') }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label for="" class="control-label bold">
+                                            {{ 'Consultorio:' | trans }}
+                                        </label>
+                                        <div class="controls">
+                                            <span class="text">{{ obj.consultorio | default('-') }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="control-group">
+                                        <label for="" class="control-label bold">
+                                            {{ 'Pasillo:' | trans }}
+                                        </label>
+                                        <div class="controls">
+                                            <span class="text">{{ obj.pasillo | default('-') }}</span>
+                                        </div>
+                                    </div>
+                                                                   </div>
+                                <!--/span-->
+                                {#<div class="span6 ">                                                                       
+                                    <div class="control-group">
+                                        <label for="" class="control-label bold">
+                                            {{ 'Imagen de cédula:' | trans }}
+                                        </label>
+                                        <div class="controls">
+                                            <div class="text">
+                                                <div class="thumbnail" style="width: 200px; height: 150px;">
+                                                    {% if obj.imagenCedula is null %}
+                                                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text={{ 'sin+imagen' | trans }}" alt="" />
+                                                    {% else %}
+                                                        <img src="{{ asset(upload_dir | slice(1) ~ '/paciente/' ~ obj.id ~ '/' ~ obj.imagenCedula) }}" alt="{{ obj.nombreCompleto }}" style="height: 150px;" />
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>#}
+                                <!--/span-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--END TABS-->
+                <div class="form-actions">
+                    <a href="{{ path('dashboard_medico') }}" class="btn purple-stripe block-portlet"><i class="icon-ambulance"></i> <span class="hidden-phone">{{ 'Ver turnos del médico' | trans }}</span></a>                    
+                    <a href="{{ path('dashboard_medico') }}" class="btn purple-stripe block-portlet"><i class="icon-list"></i> <span class="hidden-phone">{{ 'Regresar al listado' | trans }}</span></a>
+                    {% if obj.id != app.user.id %}
+                    {% if app.user.esAdmin %}
+                    <a href="{{ path('dashboard_medico_eliminar', { 'id': obj.id }) }}" class="btn red-stripe view-btn-delete-object ajax-btn"><i class="icon-trash"></i> <span class="hidden-phone">{{ 'Eliminar' | trans }}</span></a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <!-- END FORM-->
+        </div>
+    </div>    
+    <div class="confirm_delete hide" title="{{ 'Confirmación' | trans }}" data-for="view-usuario">
+        <p><span class="icon icon-warning-sign"></span>
+            {{ 'Está a punto de eliminar este elemento. Se perderán todos sus datos.' | trans }}
+            <br/>
+            {{ '¿Desea continuar?' | trans }}
+        </p>
+    </div>    
+{% endblock %}

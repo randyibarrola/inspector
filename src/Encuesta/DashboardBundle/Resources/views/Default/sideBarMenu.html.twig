@@ -1,0 +1,126 @@
+<ul class="page-sidebar-menu">
+    <li>
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+        <div class="sidebar-toggler hidden-phone">
+        </div>
+        <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+    </li>
+    <li class="start {% if route_match in ['dashboard_turnos'] %}active{% endif %}">
+        <a href="{{ path('dashboard_turnos') }}" target="">
+            <i class="icon-ambulance">
+            </i>
+            <span class="title">
+                {{ 'Turnos del día' | trans }}
+            </span>
+            {% if route_match in ['dashboard_turnos'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>   
+    {% if app.user.esAdmin  %}
+    <li class="start {% if route_match in ['dashboard_carga_turnos'] %}active{% endif %}">
+        <a href="{{ path('dashboard_carga_turnos') }}" target="">
+            <i class="icon-upload">
+            </i>
+            <span class="title">
+                {{ 'Carga de Turnos' | trans }}
+            </span>
+            {% if route_match in ['dashboard_carga_turnos'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>   
+    {% endif %}
+    {% if app.user.esAdmin  %}
+    <li class="start {% if route_match in ['dashboard_resetear_turno'] %}active{% endif %}">
+        <a href="{{ path('dashboard_resetear_turno') }}" target="">
+            <i class="icon-calendar">
+            </i>
+            <span class="title">
+                {{ 'Resetear Turnero' | trans }}
+            </span>
+            {% if route_match in ['dashboard_resetear_turno'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>   
+    {% endif %}    
+    <li class="start {% if route_match in ['dashboard_paciente_buscador'] %}active{% endif %}">
+        <a href="{{ path('dashboard_paciente_buscador') }}" target="">
+            <i class="icon-external-link">
+            </i>
+            <span class="title">
+                {{ 'Buscador General' | trans }}
+            </span>
+            {% if route_match in ['dashboard_paciente_buscador'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>
+    <li class="{% if route_match in ['dashboard_paciente', 'dashboard_paciente_ver', 'dashboard_paciente_nuevo'] %}active{% endif %}">
+        <a href="{{ path('dashboard_paciente') }}">
+            <i class="icon-file-text">
+            </i>
+            <span class="title">
+                {{ 'Pacientes' | trans }}
+            </span>
+            {% if route_match in ['dashboard_paciente', 'dashboard_paciente_ver'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>
+    {% if app.user.esAdmin  %}
+    <li class="{% if route_match in ['dashboard_medico', 'dashboard_medico_ver', 'dashboard_medico_nuevo'] %}active{% endif %}">
+        <a href="{{ path('dashboard_medico') }}">
+            <i class="icon-book">
+            </i>
+            <span class="title">
+                {{ 'Médicos' | trans }}
+            </span>
+            {% if route_match in ['dashboard_medico', 'dashboard_medico_ver'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>    
+    
+    <li class="{% if route_match in ['dashboard_categoria', 'dashboard_categoria_nuevo', 'dashboard_categoria_editar', 'dashboard_categoria_ver'] %}active{% endif %}">
+        <a href="{{ path('dashboard_categoria') }}">
+            <i class="icon-sitemap">
+            </i>
+            <span class="title">
+                {{ 'Tipo Afiliado' | trans }}
+            </span>
+            {% if route_match in ['dashboard_categoria', 'dashboard_categoria_nuevo', 'dashboard_categoria_editar', 'dashboard_categoria_ver'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>  
+    
+    <li class="{% if route_match in ['dashboard_usuario', 'dashboard_usuario_ver'] %}active{% endif %}">
+        <a href="{{ path('dashboard_usuario') }}">
+            <i class="icon-group">
+            </i>
+            <span class="title">
+                {{ 'Usuarios' | trans }}
+            </span>
+            {% if route_match in ['dashboard_usuario', 'dashboard_usuario_ver', 'dashboard_usuario_nuevo'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>
+    {% endif %}
+    {#
+    <li class="{% if route_match == 'dashboard_hompage' %}active{% endif %}">
+        <a href="{{ path('dashboard_hompage') }}">
+            <i class="icon-home">
+            </i>
+            <span class="title">
+                {{ 'Panel de control' | trans }}
+            </span>
+            {% if route_match == 'dashboard_hompage' %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>    
+    #}
+</ul>

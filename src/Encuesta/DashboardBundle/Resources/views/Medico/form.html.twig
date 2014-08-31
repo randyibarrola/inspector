@@ -1,0 +1,145 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ (obj.id is not null ? 'Editar medico' : 'Añadir medico') | trans ~ (obj.id is not null ? ' ' ~ obj.nombre : '') }}{% endblock %}
+{% block plugins_stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/select2_metro.css') }}" />
+{% endblock %}
+{% block plugins_javascript %}
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/lib/jquery.form.js') }}"></script>
+    {% if app.request.locale != 'en' %}
+        <script type="text/javascript" src="{{ asset('plugins/jquery-validation/localization/messages_' ~ app.request.locale ~ '.js') }}"></script>
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/select2/select2.min.js') }}"></script>
+{% endblock %}
+{% block level_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/dashboard/form.js') }}"></script>
+{% endblock %}
+{% block init_javascript %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            Form.init();
+
+            $('.imagen_paciente').eq(0).change(function() {
+                $('#widget_imagen_delete').val($(this).val().trim().length > 0 ? '0' : '1');
+            });
+        });
+    </script>
+{% endblock %}
+{% block page_title %}{{ 'Medicos' | trans }} <small>{{ obj.id is not null ? 'editar' | trans : 'añadir nuevo' | trans }}</small>{% endblock %}
+{% block breadcrumb_list %}
+    {{ parent() }}
+    <li>
+        <i class="icon-sitemap"></i>
+        <a href="{{ path('dashboard_medico') }}">{{ 'Médico' | trans }}</a>
+        <span class="icon-angle-right"></span>
+    </li>
+    <li>
+        <i class="{{ obj.id is not null ? 'icon-edit' | trans : 'icon-plus' | trans }}"></i>
+        {{ obj.id is not null ? 'Editar' | trans : 'Añadir nuevo' | trans }}
+    </li>
+{% endblock %}
+
+{% block level_content %}
+    <div class="portlet box purple">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-sitemap"></i>{{ 'Formulario de médico' | trans }}</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+            <div class="actions">
+                <a class="btn purple block-portlet" href="{{ path('dashboard_medico') }}"><i class="icon-list"></i> <span class="hidden-480">{{ 'Regresar al listado' | trans }}</span></a>
+                {% if obj.id is not null %}
+                    <a class="btn purple block-portlet" href="{{ path('dashboard_medico_ver', { 'id': obj.id }) }}"><i class="icon-file"></i> <span class="hidden-480">{{ 'Ver' | trans }}</span></a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form class="horizontal-form form-validate ajax-form {% if obj.id is null %}form_new{% endif %}" action="{{ obj.id is not null ? path('dashboard_medico_editar', { 'id': obj.id }) : path('dashboard_medico_nuevo') }}" method="post" {{ form_enctype(form) }}>
+                <div class="span6 pull-right">
+                    <div class="alert-validation alert hide">
+                        <div class="alert-message">{{ 'Existen datos incorrectos en el formulario' | trans }}</div>
+                    </div>
+                </div>
+                <h3 class="form-section">{{ obj.id is null ? 'Añadir nuevo medico' | trans : 'Editar medico' | trans }}</h3>
+                <div class="row-fluid">
+                    <div class="span6 ">
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Nombre del médico' | trans }}                               
+                            </label>
+                            <div class="controls">                               
+                                {{ form_widget(form.nombre, {'attr': {'class': 'm-wrap span11 nombre_paciente validate-icon', 'placeholder': 'Nombre del médico' | trans}} ) }}                                  
+                               
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Apellidos del médico' | trans }}                               
+                            </label>
+                            <div class="controls">                               
+                                {{ form_widget(form.apellidos, {'attr': {'class': 'm-wrap span11 nombre_apellidos validate-icon', 'placeholder': 'Apellidos del médico' | trans}}) }}                                   
+                               
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Especialidad' | trans }}
+                            </label>
+                            <div class="controls">
+                                {{ form_widget(form.especialidad, {'attr': {'class': 'm-wrap span11 celular validate-icon', 'placeholder': 'Celular' | trans, 'tabindex': '1'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                        
+                    <div class="span6 ">
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Email' | trans }}
+                            </label>
+                            <div class="controls">
+                                {{ form_widget(form.email, {'attr': {'class': 'm-wrap span11 validate-icon ', 'placeholder': 'Email' | trans, 'tabindex': '1'}}) }}
+                            </div>
+                        </div>
+                        
+                    </div>                        
+                    <!--/span-->
+                    <div class="span6 ">
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Consultorio' | trans }}
+                            </label>
+                            <div class="controls">
+                                {{ form_widget(form.consultorio, {'attr': {'class': 'm-wrap span11 cedula validate-icon ', 'placeholder': 'Consultorio' | trans, 'tabindex': '1'}}) }}
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="span6 ">
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Pasillo' | trans }}
+                            </label>
+                            <div class="controls">
+                                {{ form_widget(form.pasillo, {'attr': {'class': 'm-wrap span11 categoria validate-icon', 'placeholder': 'Pasillo' | trans, 'tabindex': '1'}}) }}
+                            </div>
+                        </div>                  
+                        
+                    </div>                 
+                   
+                </div>
+                <!--/row-->
+                {{ form_rest(form) }}
+                <div class="form-actions">
+                    <button class="btn purple" type="submit"><i class="icon-ok"></i> {{ 'Guardar' | trans }}</button>
+                    <a class="btn block-portlet" href="{{ path('dashboard_paciente') }}">{{ 'Cancelar' | trans }}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

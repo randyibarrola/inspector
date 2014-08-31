@@ -1,0 +1,89 @@
+{% extends '::base-dashboard.html.twig' %}
+
+{% block body %}
+    <!-- BEGIN HEADER -->
+    <div class="header navbar navbar-inverse navbar-fixed-top hidden-print">
+        <!-- BEGIN TOP NAVIGATION BAR -->
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <!-- HEADER CONTENT GOES HERE -->
+                <!-- BEGIN LOGO -->
+                <a style="padding: 0 !important;" href="{{ path('dashboard_hompage') }}" class="brand">
+                    <span id="dashboard-logo" class="">
+                        {#<i class="icon-cogs"></i> CENDIAVIA#}
+                            <img style="height: 40px !important;" src="{{ asset('images/logoCENDIAVIA.jpg') }}" /> 
+                    </span>
+                </a>
+                <!-- END LOGO -->
+                <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+                <a data-target=".nav-collapse" data-toggle="collapse" class="btn-navbar collapsed" href="javascript:;">
+                    <img alt="" src="{{ asset('images/metronic/menu-toggler.png') }}">
+                </a>
+                <!-- END RESPONSIVE MENU TOGGLER -->
+                <!-- BEGIN TOP NAVIGATION MENU -->
+                {% include 'DashboardBundle:Default:topMenu.html.twig' %}
+                <!-- END TOP NAVIGATION MENU -->
+            </div>
+        </div>
+        <!-- END TOP NAVIGATION BAR -->
+    </div>
+    <!-- END HEADER -->
+    <!-- BEGIN CONTAINER -->
+    <div class="page-container row-fluid">
+        <!-- BEGIN SIDEBAR -->
+        <div class="page-sidebar nav-collapse collapse hidden-print">
+            <!-- PAGE SIDEBAR CONTENT GOES HERE -->
+            <!-- BEGIN SIDEBAR MENU -->
+            {{ render(controller('DashboardBundle:Default:sideBarMenu')) }}
+            <!-- END SIDEBAR MENU -->
+        </div>
+        <!-- END SIDEBAR -->
+        <!-- BEGIN PAGE -->
+        <div class="page-content">
+            <!-- PAGE CONTENT GOES HERE -->
+            <!-- BEGIN PAGE CONTAINER-->
+            <div class="container-fluid">
+                <!-- BEGIN PAGE HEADER-->
+                <div class="row-fluid">
+                    <div class="span12">
+                        <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+                        <h3 class="page-title">
+                            {% block page_title %}{% endblock %}
+                        </h3>
+                        {% block breadcrumb %}
+                            <ul class="breadcrumb hidden-phone">
+                                {% block breadcrumb_list %}
+                                    <li>
+                                        <i class="icon-home"></i>
+                                        <a href="{{ path('dashboard_hompage') }}">{{ 'Inicio' | trans }}</a>
+                                        <span class="icon-angle-right"></span>
+                                    </li>
+                                {% endblock %}
+                            </ul>
+                        {% endblock %}
+                        <!-- END PAGE TITLE & BREADCRUMB-->
+                    </div>
+                </div>
+                <!-- END PAGE HEADER-->
+                <!-- CONTENT BODY GOES HERE >>>> -->
+                {% block level_content %}{% endblock %}
+            </div>
+            <!-- END PAGE CONTAINER-->
+        </div>
+        <!-- END PAGE -->
+    </div>
+    <!-- END CONTAINER -->
+    <!-- BEGIN FOOTER -->
+    <div class="footer hidden-print">
+        <!-- PAGE FOOTER GOES HERE -->
+        <div class="footer-inner">
+            2014 &copy; CENDIAVIA. {{ 'Panel de administración' | trans }}.
+        </div>
+        <div class="footer-tools">
+            <span class="go-top">
+                <i class="icon-angle-up"></i>
+            </span>
+        </div>
+    </div>
+    <!-- END FOOTER -->
+{% endblock %}

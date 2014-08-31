@@ -1,0 +1,152 @@
+{% set letras = { '1':'A','2':'B','3':'C','4':'D'} %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>-. IMPRESION DE TURNO .- CIENDIAVIA</title>
+<link href="{{ asset('css/estilos.css') }}" rel="stylesheet" type="text/css" />
+<style type="text/css">
+body {
+	background-color: #CCC;
+        width: 250px;
+        height: 350px;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+    
+  }
+  #imprimir * {
+    visibility: visible;
+  }
+  #imprimir {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  
+  .altura tr td{
+     height: 27px !important; 
+    }
+}
+</style>
+<script language="javascript" type="text/javascript">
+//FECHA ACTUAL EN FORMATO TEXTO
+//
+//Autor: Iván Nieto Pérez
+//Este script y otros muchos pueden
+//descarse on-line de forma gratuita
+//en El Código: www.elcodigo.com
+
+</script>
+<script language="javascript" type="text/javascript">
+//RELOJ 24 HORAS
+//
+//Autor: Iván Nieto Pérez
+//Este script y otros muchos pueden
+//descarse on-line de forma gratuita
+//en El Código: www.elcodigo.com
+
+</script>
+
+
+</head>
+
+<body>
+    <div id="imprimir" style="height: 500px;width: 250px;font-family:'Arial'; font-size: 10px; ">
+    <table width="300" height="100" border="0" align="left" cellpadding="0" cellspacing="0" >
+      <tr>
+        <td width="70%" align="left" bgcolor="#FFFFFF">
+            <table class="altura" width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid black;" >
+                <tr>
+                    <td style="" align="center"><img  height="40" width="120" src="/images/logo.jpg"></td>
+                </tr>
+                <tr>
+                    <td height="27" style="border-top: 1px solid black; font-size: 9px; padding: 0 0 0 5px;">  Dr: {{ turno.medico.nombreCompleto }}</td>
+                </tr>  
+                <tr>
+                    <td  height="27" style="border-top: 1px solid black; font-size: 9px; padding: 0 0 0 5px;">  CONSULTORIO: {{ turno.medico.consultorio }}</td>
+                </tr>     
+                <tr>
+                    <td  height="27" style="border-top: 1px solid black; font-size: 9px; padding: 0 0 0 5px;">  PASILLO: {{ turno.medico.pasillo }}</td>
+                </tr>                     
+            </table>
+              
+        </td>
+        <td width="30%" height="100%" align="right" bgcolor="#FFFFFF">
+            <table  width="100%" cellpadding="0" cellspacing="0" style="border: 1px solid black;">
+                <tr>
+                    
+                    <td height="100%" style="text-align: center;padding-top: 10px;padding-bottom:11px;">
+                  
+                        <span style="border-color: black;font-size: 18px; font-weight: bold; text-align: center;margin-top:10px;">TURNO</span><br/>
+                        <span style="border-color: black;font-size: 10px; font-weight: bold; text-align: center;">SIGNOS VITALES</span><br/>
+                        <span style="border-color: black;font-size: 57px; font-weight: bold; text-align: center;">{{ turno.numero }}</span>
+                    </td>
+                </tr>      
+            
+            </table>
+        </td>
+      </tr>
+        <tr>
+            <td colspan="2" cellpadding="0" height="27" cellspacing="0" style="border-top: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;font-size: 9px;  padding: 0 0 0 5px;" bgcolor="#FFFFFF">
+                PACIENTE: {{ turno.paciente.nombreCompleto  }}
+            </td> 
+        </tr>
+        <tr>
+            <td colspan="2" cellpadding="0" height="27" cellspacing="0" style="border-top: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;font-size: 9px;  padding: 0 0 0 5px;" bgcolor="#FFFFFF">
+                HORA DE LLEGADA: {{ "now" | date('H:i')  }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" cellpadding="0" height="27" cellspacing="0" style="border: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;font-size: 9px;  padding: 0 0 0 5px;" bgcolor="#FFFFFF">
+                HORA DE CITA: {{ turno.horaVisual  }}
+            </td>
+        </tr>            
+    </table>
+ 
+    <table width="300" height="100" border="0" align="left" cellpadding="0" cellspacing="0" style="border: 1px solid black;font-size: 9px;">
+        <tr>
+            <td  cellpadding="0" height="27" cellspacing="0" style="padding: 0 0 0 5px;" bgcolor="#FFFFFF">
+                TEMPERATURA: 
+            </td>
+        </tr> 
+        <tr>
+            <td  cellpadding="0" height="27" cellspacing="0" style="border-top: 1px solid black;  padding: 0 0 0 5px;" bgcolor="#FFFFFF">
+                TENSIÓN ARTERIAL: 
+            </td>
+        </tr> 
+        <tr>
+            <td  cellpadding="0" height="27" cellspacing="0" style="border-top: 1px solid black;  padding: 0 0 0 5px;" bgcolor="#FFFFFF">
+                PULSO: 
+            </td>
+        </tr> 
+        <tr>
+            <td  cellpadding="0" height="27" cellspacing="0" style="border-top: 1px solid black;  padding: 0 0 0 5px;" bgcolor="#FFFFFF">
+                FRECUENCIA RESP.: 
+            </td>
+        </tr>  
+        <tr>
+            <td  cellpadding="0" height="27" cellspacing="0" style="border-top: 1px solid black;  padding: 0 0 0 5px;" bgcolor="#FFFFFF">
+                PESO.: 
+            </td>
+        </tr>  
+        <tr>
+            <td  cellpadding="0" height="27" cellspacing="0" style="border-top: 1px solid black;  padding: 0 0 0 5px;" bgcolor="#FFFFFF">
+                TALLA.: 
+            </td>
+        </tr> 
+        <tr>
+            <td  cellpadding="0" height="27" cellspacing="0" style="border-top: 1px solid black;  padding: 0 0 0 5px;" bgcolor="#FFFFFF">
+                P. CEFÁLICO: 
+            </td> 
+        </tr>             
+    </table>    
+    </div>
+</body>
+</html>
+<script>
+
+window.print();
+</script>

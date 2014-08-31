@@ -1,0 +1,31 @@
+<h3>{{ 'Imágenes del Tipo de Afiliación' }}</h3>
+    <br/>
+    
+    {% if cantidad > 0 %}
+        <div class="span6">
+        {% for i in 1..cantidad %}
+            <div class="control-group" >
+                <label for="" class="control-label">
+                    {{ 'Imagen '~i | trans }}
+                </label>
+                <div class="controls">
+                    <input type="file" class="span5" name="extra_{{ i }}" />   
+                    {% if imagenes[i-1] is defined %}
+                        <a href="#" class="previa" data-src="{{ asset(imagenes[i-1].ruta) }}" ><i class="icon-camera"> Ver imagen actual</i></a>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% endfor %}
+        </div>
+    {% else %}
+        <div class="span6">
+            <label for="" class="control-label">
+                {{ 'Sin imágenes' | trans }}
+            </label>
+
+        </div>
+    {% endif %}
+<script>
+
+</script> 

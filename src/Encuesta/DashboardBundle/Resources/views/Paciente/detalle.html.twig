@@ -1,0 +1,66 @@
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <h4 class="modal-title" id="myModalLabel">{{ obj.nombreCompleto | default('-') }}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="span6 ">
+            <div class="control-group">
+                <label for="" class="control-label bold">
+                    {{ 'Cédula:' | trans }}
+                </label>
+                <div class="controls">
+                    <span class="text">{{ obj.cedula | default('-') }}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="" class="control-label bold">
+                    {{ 'Categoria:' | trans }}
+                </label>
+                <div class="controls">
+                    <span class="text">{{ obj.categoria | default('-') }}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="" class="control-label bold">
+                    {{ 'Celular:' | trans }}
+                </label>
+                <div class="controls">
+                    <span class="text">{{ obj.celular | default('-') }}</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="" class="control-label bold">
+                    {{ 'Teléfono:' | trans }}
+                </label>
+                <div class="controls">
+                    <span class="text">{{ obj.telefono | default('-') }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="span6 ">                                                                       
+                <div class="control-group">
+                    <label for="" class="control-label bold">
+                        {{ 'Imagen de cédula:' | trans }}
+                    </label>
+                    <div class="controls">
+                        <div class="text">
+                            <div class="thumbnail" style="width: 200px; height: 150px;">
+                                {% if obj.imagenCedula is null %}
+                                    <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text={{ 'sin+imagen' | trans }}" alt="" />
+                                {% else %}
+                                    <img src="{{ asset(upload_dir | slice(1) ~ '/paciente/' ~ obj.id ~ '/' ~ obj.imagenCedula) }}" alt="{{ obj.nombreCompleto }}" style="height: 150px;" />
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+    </div>
+  </div>
+</div>
+
