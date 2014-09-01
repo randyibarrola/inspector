@@ -6,11 +6,11 @@
         <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
     </li>
     <li class="start {% if route_match in ['dashboard_turnos'] %}active{% endif %}">
-        <a href="{{ path('dashboard_turnos') }}" target="">
-            <i class="icon-ambulance">
+        <a href="{{ path('dashboard_trivago_busqueda') }}" target="">
+            <i class="icon-search">
             </i>
             <span class="title">
-                {{ 'Turnos del día' | trans }}
+                {{ 'Campaña Trivago' | trans }}
             </span>
             {% if route_match in ['dashboard_turnos'] %}
                 <span class="selected"></span>
@@ -19,7 +19,7 @@
     </li>   
     {% if app.user.esAdmin  %}
     <li class="start {% if route_match in ['dashboard_carga_turnos'] %}active{% endif %}">
-        <a href="{{ path('dashboard_carga_turnos') }}" target="">
+        <a href="" target="">
             <i class="icon-upload">
             </i>
             <span class="title">
@@ -33,7 +33,7 @@
     {% endif %}
     {% if app.user.esAdmin  %}
     <li class="start {% if route_match in ['dashboard_resetear_turno'] %}active{% endif %}">
-        <a href="{{ path('dashboard_resetear_turno') }}" target="">
+        <a href="" target="">
             <i class="icon-calendar">
             </i>
             <span class="title">
@@ -46,7 +46,7 @@
     </li>   
     {% endif %}    
     <li class="start {% if route_match in ['dashboard_paciente_buscador'] %}active{% endif %}">
-        <a href="{{ path('dashboard_paciente_buscador') }}" target="">
+        <a href="" target="">
             <i class="icon-external-link">
             </i>
             <span class="title">
@@ -58,7 +58,7 @@
         </a>
     </li>
     <li class="{% if route_match in ['dashboard_paciente', 'dashboard_paciente_ver', 'dashboard_paciente_nuevo'] %}active{% endif %}">
-        <a href="{{ path('dashboard_paciente') }}">
+        <a href="">
             <i class="icon-file-text">
             </i>
             <span class="title">
@@ -71,7 +71,7 @@
     </li>
     {% if app.user.esAdmin  %}
     <li class="{% if route_match in ['dashboard_medico', 'dashboard_medico_ver', 'dashboard_medico_nuevo'] %}active{% endif %}">
-        <a href="{{ path('dashboard_medico') }}">
+        <a href="">
             <i class="icon-book">
             </i>
             <span class="title">
@@ -84,7 +84,7 @@
     </li>    
     
     <li class="{% if route_match in ['dashboard_categoria', 'dashboard_categoria_nuevo', 'dashboard_categoria_editar', 'dashboard_categoria_ver'] %}active{% endif %}">
-        <a href="{{ path('dashboard_categoria') }}">
+        <a href="">
             <i class="icon-sitemap">
             </i>
             <span class="title">
@@ -97,7 +97,7 @@
     </li>  
     
     <li class="{% if route_match in ['dashboard_usuario', 'dashboard_usuario_ver'] %}active{% endif %}">
-        <a href="{{ path('dashboard_usuario') }}">
+        <a href="">
             <i class="icon-group">
             </i>
             <span class="title">

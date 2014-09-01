@@ -4,7 +4,6 @@ namespace Encuesta\DashboardBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Encuesta\ModeloBundle\Entity\Paciente;
 use Encuesta\ModeloBundle\Entity\Turno;
 use Encuesta\ModeloBundle\Entity\Medico;
 use Encuesta\ModeloBundle\Entity\Turnero;
@@ -16,19 +15,15 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $usuarios = $em->getRepository('ModeloBundle:Usuario')->findAll();
-        $categorias = $em->getRepository('ModeloBundle:Categoria')->findAll();
-        $pacientes = $em->getRepository('ModeloBundle:Paciente')->findAll();
-        
 
         $stats = array(
-            'usuarios' => count($usuarios),
-            'categorias' => count($categorias),
-            'pacientes' => count($pacientes)
+            'usuarios' => count($usuarios)
+          
            
         );
 
         return $this->render('DashboardBundle:Default:index.html.twig', array(
-            'stats' => $stats
+            'stats' => $stats,
         ));
     }
 
@@ -37,7 +32,8 @@ class DefaultController extends Controller
         return $this->render('DashboardBundle:Default:sideBarMenu.html.twig', array(
             'route_match' => $this->getRouteName()
         ));
-    }
+    }    
+    
 
     private function getRouteName()
     {

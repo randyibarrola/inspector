@@ -1,24 +1,3 @@
-dashboard_cargar_imagenes:
-    pattern:  /cargar/imagenes/extras
-    defaults: { _controller: DashboardBundle:Paciente:renderImagenesExtras } 
-
-dashboard_resetear_turno:
-    pattern:  /resetear/turnero
-    defaults: { _controller: DashboardBundle:Default:resetearTurnero } 
-
-dashboard_carga_turnos:
-    pattern:  /carga/turnos
-    defaults: { _controller: DashboardBundle:Default:cargaTurnos } 
-    
-dashboard_turnos:
-    pattern:  /lista/turnos
-    defaults: { _controller: DashboardBundle:Default:listTurnos }     
-    
-dashboard_imprimir_turno:
-    pattern:  /imprimir/turno/{id}
-    defaults: { _controller: DashboardBundle:Default:imprimir }       
-
-
 dashboard_login:
     pattern:  /login
     defaults: { _controller: DashboardBundle:User:login }
@@ -32,6 +11,11 @@ dashboard_logout:
 dashboard_usuario:
     pattern:  /usuario
     defaults: { _controller: DashboardBundle:User:list }    
+    
+    
+dashboard_trivago_busqueda:
+    pattern:  /trivago/busqueda
+    defaults: { _controller: DashboardBundle:Trivago:busqueda } 
   
 
 dashboard_usuario_cambiar_estado:

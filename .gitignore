@@ -11,6 +11,8 @@ web/bundles/*
 # Configuration files
 app/config/parameters.ini
 app/config/parameters.yml
+nbproject/*
+nbproject
 
 # Composer
 composer.phar
