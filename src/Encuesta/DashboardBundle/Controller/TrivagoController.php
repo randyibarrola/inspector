@@ -13,11 +13,12 @@ class TrivagoController extends Controller
         $resultados = array();
         if($this->getRequest()->getMethod() == 'POST') {
             $url = $this->getRequest()->get('url');
-            $resultados = GestionBooking::getComparativaTrivago($url);
+            
+            $resultados = GestionBooking::getResultadosTrivago($url);
         }
         
         return $this->render('DashboardBundle:Trivago:busqueda.html.twig', array(
-            'resultados' => $resultados
+            'intervalos' => $resultados
         ));
     }  
     

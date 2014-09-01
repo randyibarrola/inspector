@@ -5,18 +5,20 @@
         </div>
         <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
     </li>
-    <li class="start {% if route_match in ['dashboard_turnos'] %}active{% endif %}">
+    <li class="start {% if route_match in ['dashboard_trivago_busqueda'] %}active{% endif %}">
         <a href="{{ path('dashboard_trivago_busqueda') }}" target="">
             <i class="icon-search">
             </i>
             <span class="title">
                 {{ 'Campaña Trivago' | trans }}
             </span>
-            {% if route_match in ['dashboard_turnos'] %}
+            {% if route_match in ['dashboard_trivago_busqueda'] %}
                 <span class="selected"></span>
             {% endif %}
         </a>
-    </li>   
+    </li> 
+    
+    {#
     {% if app.user.esAdmin  %}
     <li class="start {% if route_match in ['dashboard_carga_turnos'] %}active{% endif %}">
         <a href="" target="">

@@ -62,51 +62,53 @@
         <div class="portlet-body form">
             <!-- BEGIN FORM-->
             <div class="form-horizontal form-view">
-                <h3 class="hidden-phone"> {{ resultados['hotel'] }} </h3>
+                <h3 class="hidden-phone"> {{ intervalos['hotel'] }} </h3>
                 <!--BEGIN TABS-->
                 <div class="tabbable tabbable-custom">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tib" data-toggle="tab"><i class="icon-info-sign"></i> <span class="hidden-480">{{ 'Información básica' | trans }}</span></a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tib">
-                            <h4 class="form-section visible-phone hidden-tablet hidden-desktop">{{ 'Información básica' | trans }}</h4>
-                            <div class="row-fluid">
-                                <div class="span6 ">
-                                    {% for resultado in resultados['otros'] %}
+                    {% for 1 in intervalos%}
+                        <ul class="nav nav-tabs">
+                            <li class="active"><a href="#tib" data-toggle="tab"><i class="icon-info-sign"></i> <span class="hidden-480">{{ 'Información básica' | trans }}</span></a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="tib">
+                                <h4 class="form-section visible-phone hidden-tablet hidden-desktop">{{ 'Información básica' | trans }}</h4>
+                                <div class="row-fluid">
+                                    <div class="span6 ">
+                                        {% for resultado in intervalos['otros'] %}
+                                            <div class="control-group">
+                                                <label for="" class="control-label bold">
+                                                    {{ resultado['nombre'] }}
+                                                </label>
+                                                <div class="controls">
+                                                    <span class="text">{{ resultado['precio'] > 0 ? resultado['precio'] : '0 €' }}</span>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <!--/span-->
+                                    <div class="span6 ">                                                                       
                                         <div class="control-group">
                                             <label for="" class="control-label bold">
-                                                {{ resultado['nombre'] }}
+                                                {{ 'Mejor Resultado:' | trans }}
                                             </label>
                                             <div class="controls">
-                                                <span class="text">{{ resultado['precio'] > 0 ? resultado['precio'] : '0 €' }}</span>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-                                </div>
-                                <!--/span-->
-                                <div class="span6 ">                                                                       
-                                    <div class="control-group">
-                                        <label for="" class="control-label bold">
-                                            {{ 'Mejor Resultado:' | trans }}
-                                        </label>
-                                        <div class="controls">
-                                            <div class="text">
-                                                <div class="thumbnail" style="width: 200px; height: 150px;">
-                                                    {% for mejor in resultados['mejor'] %}
-                                                    <label for="" class="control-label bold">
-                                                        {{ mejor  }}
-                                                    </label>
-                                                    {% endfor %}
+                                                <div class="text">
+                                                    <div class="thumbnail" style="width: 200px; height: 150px;">
+                                                        {% for mejor in resultados['mejor'] %}
+                                                        <label for="" class="control-label bold">
+                                                            {{ mejor  }}
+                                                        </label>
+                                                        {% endfor %}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <!--/span-->
                                 </div>
-                                <!--/span-->
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
                 <!--END TABS-->
                 <div class="form-actions">

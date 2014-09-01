@@ -525,6 +525,58 @@ class GestionBooking
         
     }
     
+    public static function getResultadosTrivago($url){
+            
+            $fechaArr = null;
+            $fechaDep = null;
+            if(substr_count($url, 'aDateRange[arr]') > 0){
+                $posicionArr = stripos($url, 'aDateRange[arr]');
+                $fechaArr = substr($url, $posicionArr+16, 10);
+            }
+            
+            if(substr_count($url, 'aDateRange[dep]') > 0){
+                $posicionArr = stripos($url, 'aDateRange[dep]');
+                $fechaDep = substr($url, $posicionArr+16, 10);
+            }    
+            
+            if($fechaArr && $fechaDep) {
+                $intervalos = array();
+                $cantidadBooking = 0;
+                $resultados = self::getComparativaTrivago($url);
+                if($resultados['viable']){
+                    $cantidadBooking++;
+                }
+                $intervalos['hotel'] = $resultados['hotel'];
+                $intervalos[1] = array( 'fecha_inicio' => $fechaArr , 'fecha_fin' => $fechaDep , 'resultados' => $resultados, 'url'=>$url);            
+
+                for($i = 2; $i < 13; $i++){
+
+                    $date = new DateTime($fechaDep);
+                    $date->add(new DateInterval('P1D'));
+                    //tranformando url
+                    $url = str_replace($fechaArr, $date->format('Y-m-d'), $url);
+                    $fechaArr = $date->format('Y-m-d');
+
+                    $date = new DateTime($fechaDep);
+                    $date->add(new DateInterval('P7D')); 
+                    //tranformando url
+                    $url = str_replace($fechaDep, $date->format('Y-m-d') , $url);
+                    $fechaDep = $date->format('Y-m-d');
+                    
+                    $resultados = self::getComparativaTrivago($url);
+                    if($resultados['viable']){
+                        $cantidadBooking++;
+                    }
+                    $intervalos[$i] = array('fecha_inicio' => $fechaArr, 'fecha_fin' => $fechaDep, 'resultados' => $resultados, 'url'=>$url );
+                }     
+                
+                $intervalos['porcentaje'] = number_format( ( $cantidadBooking * 100 ) / 12, 2 );
+                return $intervalos;
+            }
+            
+            return array();
+    }
+    
     public static function getComparativaTrivago($url)
     {
         $ch = self::LoginAtrapalo($url);
@@ -532,6 +584,7 @@ class GestionBooking
         
         $busqueda = array();
         $busqueda['mejor'] = array();
+        $busqueda['viable'] = false;
         
 //        $html = self::str_get_dom($content);   
         $html = SimpleHtmlDom::my_file_get_html($content);  
@@ -540,8 +593,12 @@ class GestionBooking
         
         $resultados = $html->find('div[class=item_bestprice]', 0);        
         $strongs = $resultados->find('strong');
+        
         foreach($strongs as $st){            
             $busqueda['mejor'][] = trim(  $st->plaintext );
+            if( substr_count(strtolower( trim(  $st->plaintext ) ) , 'booking.com') ){
+               $busqueda['viable'] = true;
+            }
         }
         
         
@@ -557,6 +614,7 @@ class GestionBooking
             //echo $nombre.'  '.$precio."\n";
         }
         $busqueda['hotel'] = $html->find('h3[class=jsheadline]',0)->plaintext;
+        
         return $busqueda;
     }
     
