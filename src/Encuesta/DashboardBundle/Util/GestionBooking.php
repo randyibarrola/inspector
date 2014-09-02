@@ -35,7 +35,7 @@ class GestionBooking
         //$password = 'STRlavapies';
         $loginUrl = $url;
         $http_headers = array(                    
-                    'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:6.0.2) Gecko/20100101 Firefox/6.0.2',
+                    'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:6.0.2) Gecko/20100101 Firefox/30.0.2',
                     'Accept: */*',
                     'Accept-Language: en-us,en;q=0.5',
                     'Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7',
@@ -47,7 +47,7 @@ class GestionBooking
         //curl_setopt($ch, CURLOPT_POSTFIELDS, 'user='.$username.'&pass='.$password);
         //curl_setopt($ch, CURLOPT_COOKIEJAR, 'cookie.txt');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $http_headers);
 //        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US)'); 
 
@@ -527,6 +527,7 @@ class GestionBooking
     
     public static function getResultadosTrivago($url){
             
+            
             $fechaArr = null;
             $fechaDep = null;
             if(substr_count($url, 'aDateRange[arr]') > 0){
@@ -549,7 +550,7 @@ class GestionBooking
                 $intervalos['hotel'] = $resultados['hotel'];
                 $intervalos[1] = array( 'fecha_inicio' => $fechaArr , 'fecha_fin' => $fechaDep , 'resultados' => $resultados, 'url'=>$url);            
 
-                for($i = 2; $i < 4; $i++){
+                for($i = 2; $i < 13; $i++){
 
                     $date = new \DateTime($fechaDep);
                     $date->add(new \DateInterval('P1D'));
@@ -571,6 +572,7 @@ class GestionBooking
                 }     
                 
                 $intervalos['porcentaje'] = number_format( ( $cantidadBooking * 100 ) / 12, 2 );
+                
                 return $intervalos;
             }
             
@@ -581,6 +583,8 @@ class GestionBooking
     {
         $ch = self::LoginAtrapalo($url);
         $content = curl_exec($ch); 
+        curl_close($ch);
+        
         
         $busqueda = array();
         $busqueda['mejor'] = array();
@@ -613,7 +617,7 @@ class GestionBooking
 
             //echo $nombre.'  '.$precio."\n";
         }
-        $busqueda['hotel'] = $html->find('h3[class=jsheadline]',0)->plaintext;
+        $busqueda['hotel'] = trim($html->find('h3[class=jsheadline]',0)->plaintext);
         
         return $busqueda;
     }
