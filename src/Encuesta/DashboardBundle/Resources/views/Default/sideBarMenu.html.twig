@@ -5,6 +5,18 @@
         </div>
         <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
     </li>
+    <li class="start {% if route_match in ['dashboard_trivago_consultas'] %}active{% endif %}">
+        <a href="" target="">
+            <i class="icon-upload">
+            </i>
+            <span class="title">
+                {{ 'Consultas' | trans }}
+            </span>
+            {% if route_match in ['dashboard_trivago_consultas'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>    
     <li class="start {% if route_match in ['dashboard_trivago_busqueda'] %}active{% endif %}">
         <a href="{{ path('dashboard_trivago_busqueda') }}" target="">
             <i class="icon-search">

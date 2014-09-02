@@ -16,6 +16,20 @@ dashboard_usuario:
 dashboard_trivago_busqueda:
     pattern:  /trivago/busqueda
     defaults: { _controller: DashboardBundle:Trivago:busqueda } 
+    
+dashboard_trivago_consultas:
+    pattern:  /trivago/listado/consultas
+    defaults: { _controller: DashboardBundle:Trivago:listado }    
+    
+dashboard_trivago_consulta_nuevo:
+    pattern:  /trivago/consulta/nuevo
+    defaults: { _controller: DashboardBundle:Trivago:new }
+    
+dashboard_trivago_consulta_editar:
+    pattern:  /trivago/consulta/editar/{id}
+    defaults: { _controller: DashboardBundle:Trivago:edit }
+    requirements:
+        id: \d+        
   
 
 dashboard_usuario_cambiar_estado:

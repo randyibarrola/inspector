@@ -136,7 +136,7 @@ class UserController extends Controller
         ));
     }    
     
-private function save(FormInterface $form, $passwordOriginal = null)
+    private function save(FormInterface $form, $passwordOriginal = null)
     {      
         $translator = $this->get('translator');
         $em = $this->getDoctrine()->getManager();
