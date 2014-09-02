@@ -46,7 +46,7 @@
     {% if app.request.method == 'POST' %}
     <div class="portlet box blue view-container" id="view-usuario">
         <div class="portlet-title">
-            <div class="caption"><i class="icon-group"></i> {{ resultados['hotel'] }} </div>
+            <div class="caption"><i class="icon-group"></i> {{ intervalos['hotel'] }} </div>
             <div class="tools">
                 <a href="javascript:;" class="collapse"></a>
             </div>
@@ -65,7 +65,7 @@
                 <h3 class="hidden-phone"> {{ intervalos['hotel'] }} </h3>
                 <!--BEGIN TABS-->
                 <div class="tabbable tabbable-custom">
-                    {% for 1 in intervalos%}
+                    {% for i in 1..4%}
                         <ul class="nav nav-tabs">
                             <li class="active"><a href="#tib" data-toggle="tab"><i class="icon-info-sign"></i> <span class="hidden-480">{{ 'Información básica' | trans }}</span></a></li>
                         </ul>
@@ -74,7 +74,7 @@
                                 <h4 class="form-section visible-phone hidden-tablet hidden-desktop">{{ 'Información básica' | trans }}</h4>
                                 <div class="row-fluid">
                                     <div class="span6 ">
-                                        {% for resultado in intervalos['otros'] %}
+                                        {% for resultado in intervalos[i]['resultados']['otros'] %}
                                             <div class="control-group">
                                                 <label for="" class="control-label bold">
                                                     {{ resultado['nombre'] }}
@@ -94,7 +94,7 @@
                                             <div class="controls">
                                                 <div class="text">
                                                     <div class="thumbnail" style="width: 200px; height: 150px;">
-                                                        {% for mejor in resultados['mejor'] %}
+                                                        {% for mejor in intervalos[i]['mejor']%}
                                                         <label for="" class="control-label bold">
                                                             {{ mejor  }}
                                                         </label>

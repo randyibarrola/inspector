@@ -549,16 +549,16 @@ class GestionBooking
                 $intervalos['hotel'] = $resultados['hotel'];
                 $intervalos[1] = array( 'fecha_inicio' => $fechaArr , 'fecha_fin' => $fechaDep , 'resultados' => $resultados, 'url'=>$url);            
 
-                for($i = 2; $i < 13; $i++){
+                for($i = 2; $i < 4; $i++){
 
-                    $date = new DateTime($fechaDep);
-                    $date->add(new DateInterval('P1D'));
+                    $date = new \DateTime($fechaDep);
+                    $date->add(new \DateInterval('P1D'));
                     //tranformando url
                     $url = str_replace($fechaArr, $date->format('Y-m-d'), $url);
                     $fechaArr = $date->format('Y-m-d');
 
-                    $date = new DateTime($fechaDep);
-                    $date->add(new DateInterval('P7D')); 
+                    $date = new \DateTime($fechaDep);
+                    $date->add(new \DateInterval('P7D')); 
                     //tranformando url
                     $url = str_replace($fechaDep, $date->format('Y-m-d') , $url);
                     $fechaDep = $date->format('Y-m-d');
