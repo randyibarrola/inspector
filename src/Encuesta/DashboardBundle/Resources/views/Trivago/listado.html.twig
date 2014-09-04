@@ -54,13 +54,10 @@
                 <a href="javascript:;" class="collapse"></a>
             </div>
             <div class="actions">
-                {#<a class="btn purple table-actions-new block-portlet" href="{{ path('dashboard_categoria_nuevo') }}">#}
-                    {#<i class="icon-plus"></i> <span class="hidden-phone">{{ 'Añadir nuevo' | trans }}</span>#}
-                {#</a>#}
-                <div class="btn-group table-actions-columns hidden-480">   
-                    <a class="btn purple table-actions-new block-portlet" href="{{ path('dashboard_turnos', { 'ver': "todos" }) }}">
-                        <i class="icon-eye-open"></i> <span class="hidden-phone">{{ 'Ver todos los turnos' | trans }}</span>
-                    </a>
+                <a class="btn purple table-actions-new block-portlet" href="{{ path('dashboard_trivago_consulta_nuevo') }}">
+                    <i class="icon-plus"></i> <span class="hidden-phone">{{ 'Nueva consulta' | trans }}</span>
+                </a>
+                <div class="btn-group table-actions-columns hidden-480">
                     <a data-toggle="dropdown" href="#" class="btn">
                         <i class="icon-columns"></i> <span class="hidden-phone">{{ 'Columnas' | trans }}</span>
                         <i class="icon-angle-down"></i>

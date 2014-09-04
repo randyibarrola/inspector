@@ -550,8 +550,7 @@ class GestionBooking
                 $intervalos['hotel'] = $resultados['hotel'];
                 $intervalos[1] = array( 'fecha_inicio' => $fechaArr , 'fecha_fin' => $fechaDep , 'resultados' => $resultados, 'url'=>$url);            
 
-                for($i = 2; $i < 13; $i++){
-
+                for($i = 2; $i < 7; $i++){                    
                     $date = new \DateTime($fechaDep);
                     $date->add(new \DateInterval('P1D'));
                     //tranformando url
@@ -593,9 +592,7 @@ class GestionBooking
 //        $html = self::str_get_dom($content);   
         $html = SimpleHtmlDom::my_file_get_html($content);  
         
-        
-        
-        $resultados = $html->find('div[class=item_bestprice]', 0);        
+        $resultados = $html->find('div[class=item_bestprice]', 0);      
         $strongs = $resultados->find('strong');
         
         foreach($strongs as $st){            
