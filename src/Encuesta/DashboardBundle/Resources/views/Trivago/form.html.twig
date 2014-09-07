@@ -4,11 +4,14 @@
 {% block plugins_stylesheet %}
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/select2_metro.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/bootstrap-datepicker/css/datepicker.css') }}" />
 {% endblock %}
 {% block plugins_javascript %}
     <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/jquery.validate.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/additional-methods.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('plugins/jquery-validation/lib/jquery.form.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.es.js') }}"></script>
     {% if app.request.locale != 'en' %}
         <script type="text/javascript" src="{{ asset('plugins/jquery-validation/localization/messages_' ~ app.request.locale ~ '.js') }}"></script>
     {% endif %}
@@ -17,16 +20,13 @@
 {% endblock %}
 {% block level_javascript %}
     {{ parent() }}
-    <script type="text/javascript" src="{{ asset('js/dashboard/form.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/dashboard/form.js') }}"></script>     
+    <script type="text/javascript" src="{{ asset('js/dashboard/consulta.js') }}"></script>  
 {% endblock %}
 {% block init_javascript %}
-    {{ parent() }}
+    {{ parent() }}    
     <script>
-        jQuery(document).ready(function() {
-            Form.init();
-
-
-        });
+       
     </script>
 {% endblock %}
 {% block page_title %}{{ 'Consultas' | trans }} <small>{{ obj.id is not null ? 'editar' | trans : 'añadir nuevo' | trans }}</small>{% endblock %}
@@ -53,7 +53,7 @@
             <div class="actions">
                 <a class="btn purple block-portlet" href="{{ path('dashboard_trivago_consultas') }}"><i class="icon-list"></i> <span class="hidden-480">{{ 'Regresar al listado' | trans }}</span></a>
                 {% if obj.id is not null %}
-                    <a class="btn green block-portlet" href="{{ path('dashboard_usuario_ver', { 'id': obj.id }) }}"><i class="icon-file"></i> <span class="hidden-480">{{ 'Ver' | trans }}</span></a>
+                    <a class="btn green block-portlet" href="{{ path('dashboard_trivago_consulta_editar', { 'id': obj.id }) }}"><i class="icon-file"></i> <span class="hidden-480">{{ 'Ver' | trans }}</span></a>
                 {% endif %}
             </div>
         </div>
@@ -100,41 +100,50 @@
                     <div class="span6 ">
                         <div class="control-group">
                             <label for="" class="control-label">
-                                {{ 'Fecha de Ejecución' | trans }}
-                            </label>
-                            <div class="controls">
-                                
-                            </div>
+                                {{ 'Consultas de inspección a ejecutar' | trans }}
+                            </label>                            
                         </div>
-                        
                     </div>
+                    {% if obj.inspecciones | length == 0 %}
+                        <div class="span6 inspecciones">
+                            <div class="control-group">
+                                <input class="m-wrap span11 validate-icon ejecucion" style="width: 28%!important;" name="ejecucion[]" placeholder="{{ 'Fecha de Ejecución' | trans }}" /> 
+                                    <input type="hidden" name="ids[]" value="0"> 
+                                    <div class="input-daterange input-group span8" id="datepicker" style="float:right">
+                                        <input style="width: 37%!important;" type="text" class="m-wrap span11 validate-icon input-sm form-control" name="inicio[]" placeholder="{{ 'Fecha Inicial' | trans }}" />
+                                        <span class="input-group-addon">a</span>
+                                        <input style="width: 37%!important;" type="text" class="m-wrap span11 validate-icon input-sm form-control" name="fin[]" placeholder="{{ 'Fecha Final' | trans }}" />    
+                                        <a href="#" class="eliminar" title="Eliminar" style="cursor:pointer"><i class="icon-remove"></i></a>
+                                    </div>
+                            </div>                        
+                        </div>
+                    {% else %}
+                        {% for inspeccion in obj.inspecciones %}
+                        <div class="span6 inspecciones">
+                            <div class="control-group">
+                                <input class="m-wrap span11 validate-icon ejecucion" style="width: 28%!important;" name="ejecucion[]" placeholder="{{ 'Fecha de Ejecución' | trans }}" value="{{ inspeccion.fechaEjecucion | date('d/m/y') }}" />
+                                <input type="hidden" name="ids[]" value="{{ inspeccion.id }}"> 
+                                    <div class="input-daterange input-group span8" id="datepicker" style="float:right">
+                                        <input style="width: 37%!important;" type="text" class="m-wrap span11 validate-icon input-sm form-control" name="inicio[]" value="{{ inspeccion.fechaInicio | date('d/m/y') }}" />
+                                        <span class="input-group-addon">a</span>
+                                        <input style="width: 37%!important;" type="text" class="m-wrap span11 validate-icon input-sm form-control" name="fin[]" value="{{ inspeccion.fechaFin | date('d/m/y') }}"  />    
+                                        <a href="#" class="eliminar" title="Eliminar" style="cursor:pointer"><i class="icon-remove"></i></a>
+                                    </div>
+                            </div>                        
+                        </div>
+                        {% endfor %}
+                    {% endif %}
                     <div class="span6 ">
                         <div class="control-group">
-                            <label for="" class="control-label">
-                                {{ 'Rango Inicial' | trans }}
-                            </label>
-                            <div class="controls">
-                                
-                            </div>
-                        </div> 
-                        <div class="control-group">
-                            <label for="" class="control-label">
-                                {{ 'Rango Final' | trans }}
-                            </label>
-                            <div class="controls">
-                                
-                            </div>
-                        </div>                    
-                        
-                    </div>  
-                    
-                  
+                            <a class="btn purple agregar"><i class="icon-plus"></i> {{ 'Agregar consulta de inspección' | trans }}</a>
+                        </div>
+                    </div>                    
                 </div>
                 <!--/row-->
                 {{ form_rest(form) }}
                 <div class="form-actions">
                     <button class="btn purple" type="submit"><i class="icon-ok"></i> {{ 'Guardar' | trans }}</button>
-                    <a class="btn block-portlet" href="{{ path('dashboard_usuario') }}">{{ 'Cancelar' | trans }}</a>
+                    <a class="btn block-portlet" href="{{ path('dashboard_trivago_consultas') }}">{{ 'Cancelar' | trans }}</a>
                 </div>
             </form>
         </div>

@@ -57,28 +57,8 @@ class Inspeccion
      *
      * @ORM\Column(name="fecha_fin", type="date", length=70, nullable=false)
      */
-    private $fecha_fin;    
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="porcentaje_mayor", type="integer")
-     */
-    private $porcentaje_mayor;    
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="porcentaje_menor", type="integer")
-     */
-    private $porcentaje_menor;       
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="porcentaje_igual", type="integer")
-     */
-    private $porcentaje_igual;      
+    private $fecha_fin;  
+
     
     /**
      * @var datetime $created

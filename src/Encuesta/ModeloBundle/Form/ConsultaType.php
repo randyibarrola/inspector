@@ -39,7 +39,7 @@ class ConsultaType extends AbstractType
                 'required' => true
 
             ))       
-            ->add('url', 'url', array(
+            ->add('url', 'text', array(
                 'label' => 'Url de trivago.es',
                 'attr' => array(
                     'class' => 'validate[required]',

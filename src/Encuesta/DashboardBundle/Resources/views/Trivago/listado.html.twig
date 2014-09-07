@@ -20,7 +20,7 @@
 {% block level_javascript %}
     {{ parent() }}
     <script src="{{ asset('js/dashboard/table-advanced.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/dashboard/table-turno.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/dashboard/table-consulta.js') }}" type="text/javascript"></script>
 {% endblock %}
 {% block init_javascript %}
     {{ parent() }}
@@ -82,8 +82,7 @@
                 <tr class="hidden-phone hidden-print">
                     <th>{{ 'Nombre' | trans }}</th>
                     <th>{{ 'Hotel' | trans }}</th>
-                    <th>{{ 'Porcentaje' | trans }}</th>                  
-                                   
+                    <th>{{ 'Porcentaje' | trans }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -95,7 +94,8 @@
                         <td></td>
                         <td>
                             <div class="hidden-print">
-                                <a class="btn mini blue imagen" data-nombre="" data-src=""  href="#" title="{{ 'Ver Detalles de la Consulta' | trans }}"><i class="icon-camera icon-white"></i></a>
+                                <a class="btn mini blue imagen" data-nombre="" data-src=""  href="#" title="{{ 'Ver Detalles de la Consulta' | trans }}"><i class="icon-search icon-white"></i></a>
+                                <a class="btn mini green icn-only block-portlet" href="{{ path('dashboard_trivago_consulta_editar', { 'id': obj.id }) }}" title="{{ 'Editar' | trans }}"><i class="icon-edit icon-white"></i></a>                                
                                 <input type="hidden" value="{{ loop.index }}" class="table-row-index" />
                             </div>
                         </td>

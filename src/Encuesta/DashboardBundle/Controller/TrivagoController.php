@@ -7,6 +7,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Encuesta\DashboardBundle\Util\GestionBooking;
 use Encuesta\ModeloBundle\Entity\Consulta;
 use Encuesta\ModeloBundle\Form\ConsultaType;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Form\FormInterface;
+use Encuesta\ModeloBundle\Entity\Inspeccion;
 
 class TrivagoController extends Controller
 {
@@ -20,7 +23,7 @@ class TrivagoController extends Controller
         }
         
         return $this->render('DashboardBundle:Trivago:busqueda.html.twig', array(
-            'intervalos' => $resultados
+            'resultados' => $resultados
         ));
     }  
     
@@ -40,7 +43,7 @@ class TrivagoController extends Controller
         $form = $this->createForm(new ConsultaType(), $obj);
 
         if($request->getMethod() == 'POST') {
-            return $this->save($form);
+            return $this->save($form, $request);
         }
 
         return $this->render('DashboardBundle:Trivago:form.html.twig', array(            
@@ -49,7 +52,7 @@ class TrivagoController extends Controller
         ));
     }    
     
-    private function save(FormInterface $form)
+    private function save($form, $request)
     {      
         $translator = $this->get('translator');
         $em = $this->getDoctrine()->getManager();
@@ -62,12 +65,39 @@ class TrivagoController extends Controller
             if($form->isValid()) {
 
                 $data = $form->getData();
-                
                     
-                    $em->persist($data);
-                    $em->flush();
+                $em->persist($data);
+                
+                $ids = $request->get('ids');
+                $inicio = $request->get('inicio');
+                $fin = $request->get('fin');
+                $ejecucion = $request->get('ejecucion');
+                
+               /* var_dump($ids);
+                var_dump($inicio);
+                var_dump($fin);
+                
+                var_dump($ejecucion);die;*/
+                
+                $inspecciones = $data->getInspecciones();
+                foreach($inspecciones as $inspeccion){
+                    if(!in_array($inspeccion->getId(), $ids)){
+                       $em->remove($inspeccion)  ;
+                    }
+                } 
+                
+                foreach($ids as $key => $id){
+                    $inspeccion = $id > 0 ? $em->getRepository('ModeloBundle:Inspeccion')->find($id) : new Inspeccion();
+                    $inspeccion->setFechaEjecucion(\DateTime::createFromFormat('d/m/y',$ejecucion[$key]));
+                    $inspeccion->setFechaInicio(\DateTime::createFromFormat('d/m/y', $inicio[$key]));
+                    $inspeccion->setFechaFin( \DateTime::createFromFormat('d/m/y', $fin[$key]) );
+                    $inspeccion->setConsulta($data);
+                    $em->persist($inspeccion);                    
+                }
+                
+                $em->flush();
               
-
+                
                 $response->setMessage($translator->trans('La consulta se ha guardado satisfactoriamente'));
             }
             else {
@@ -86,7 +116,33 @@ class TrivagoController extends Controller
         $sResponse->headers->set('Content-Type', 'application/json; charset=utf-8');
 
         return $sResponse;
-    }      
+    } 
+    
+    public function editAction()
+    {
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
+
+        $obj = $em->getRepository('ModeloBundle:Consulta')->find($request->get('id'));
+        if(!$obj)
+            $this->createNotFoundException('No existe la consulta que está intentando editar');
+        
+        $form = $this->createForm(new ConsultaType(), $obj);
+
+        if($request->getMethod() == 'POST') {
+            
+            $response = $this->save($form, $request);
+
+            return $response;
+        }
+
+        
+        return $this->render('DashboardBundle:Trivago:form.html.twig', array(
+            'obj' => $obj,
+            'form' => $form->createView()
+        ));
+    }     
+    
     
 }
 
