@@ -169,6 +169,7 @@ class TrivagoController extends Controller
             $this->createNotFoundException('No existe la consulta que está intentando editar');
         
         $inspecciones = $obj->getInspecciones();
+        $resultados = array();
         foreach($inspecciones as $inspeccion){
             if(!$inspeccion->getEjecutada()){
                 $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
