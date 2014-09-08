@@ -1,6 +1,6 @@
 {% extends '::dashboard.html.twig' %}
 
-{% block title %}{{ parent() }} - {{ 'Resutado de la Búsqueda' | trans  }}{% endblock %}
+{% block title %}{{ parent() }} - {{ 'Resutado de la Consulta' | trans  }}{% endblock %}
 {% block plugins_stylesheet %}
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-ui/jquery-ui-1.10.1.custom.min.css') }}"/>
 {% endblock %}
@@ -17,7 +17,7 @@
         });
     </script>
 {% endblock %}
-{% block page_title %}{{ 'Busqueda Trivago' | trans }} <small>{{ 'ver información' | trans }}</small>{% endblock %}
+{% block page_title %}{{ 'Consulta Trivago' | trans }} <small>{{ 'ver información' | trans }}</small>{% endblock %}
 {% block breadcrumb_list %}
     {{ parent() }}
     <li>
@@ -32,26 +32,16 @@
 {% endblock %}
 
 {% block level_content %}
-    <form action="{{ path('dashboard_trivago_busqueda')  }}" method="post">
-    <div class="form-horizontal form-view">
-        <label for="" class="control-label bold">
-            {{ "URL Trivago" }}
-        </label>
-        <div class="controls">
-            <input type="text" id="url" name="url" placeholder="Url de la campaña" class="input-xxlarge">
-            <button type="submit" class="btn btn-primary">Enviar</button>
-        </div>
-    </div>
-    </form>
-    {% if app.request.method == 'POST' %}
+    
+    {% if consulta %}
     <div class="portlet box blue view-container" id="view-usuario">
         <div class="portlet-title">
-            <div class="caption"><i class="icon-group"></i> {{ 'nombre de hotel'}} </div>
+            <div class="caption"><i class="icon-group"></i> {{ consulta.hotel }} </div>
             <div class="tools">
                 <a href="javascript:;" class="collapse"></a>
             </div>
             <div class="actions">
-                <a class="btn blue table-actions-new block-portlet" href="">
+                <a class="btn blue table-actions-new block-portlet" href="{{ path('dashboard_trivago_consultas') }}">
                     <i class="icon-list"></i> <span class="hidden-phone">{{ 'Regresar al listado' | trans }}</span>
                 </a>                
                 <a class="btn blue table-actions-new view-btn-delete-object ajax-btn" href="">
@@ -62,29 +52,31 @@
         <div class="portlet-body form">
             <!-- BEGIN FORM-->
             <div class="form-horizontal form-view">
-                <h3 class="hidden-phone"> {{ 'Nombre del Hotel' }} </h3>
+                <h3 class="hidden-phone"> {{ consulta.hotel }} </h3>
                 <!--BEGIN TABS-->
                 <div class="tabbable tabbable-custom">
-                    
+                    {% for inspeccion in consulta.inspecciones %}
+                    {% set resultados = inspeccion.resultados %}
                         <ul class="nav nav-tabs">
                             
-                            <li class="active"><a href="#tib" data-toggle="tab"><i class="icon-info-sign"></i> <span class="hidden-480">{{ 'Fechas' }}</span></a></li>                            
+                            <li class="active"><a href="#tib" data-toggle="tab"><i class="icon-info-sign"></i> <span class="hidden-480">{{ inspeccion.fechaInicio | date('d/m/Y') ~ ' - ' ~  inspeccion.fechaFin | date('d/m/Y')}}</span></a></li>                            
                         </ul>
-                        <div class="tab-content">                           
-                            <div class="tab-pane active" id="tib">
-                                <h4 class="form-section visible-phone hidden-tablet hidden-desktop">{{ 'Información básica' | trans }}</h4>
-                                <div class="row-fluid">
+                        <div class="tab-content">    
+                            {% if inspeccion.ejecutada %}
+                                <div class="tab-pane active" id="tib">
+                                    <h4 class="form-section visible-phone hidden-tablet hidden-desktop">{{ 'Información básica' | trans }}</h4>
+                                    <div class="row-fluid">
                                         <div class="span6 ">
-                                            {% for i in 0..resultados['canales']|length -1 %}
+                                            {% for resultado in resultados %}                                        
                                                 <div class="control-group">
                                                     <label for="" class="control-label bold">
-                                                        <img src="{{ resultados['src'][i] }}">
+                                                        <img src="{{ resultado.src }}">
                                                     </label>
                                                     <label for="" class="control-label bold">
-                                                        {{ resultados['canales'][i] }}
+                                                        {{ resultado.canal }}
                                                     </label>
                                                     <label for="" class="control-label bold">
-                                                        <span class="text">{{ resultados['precios'][i] }}</span>
+                                                        <span class="text">{{ resultado.precio }}</span>
                                                     </label>
                                                 </div>
                                             {% endfor %}
@@ -95,30 +87,38 @@
                                                 <label for="" class="control-label bold">
                                                     {{ 'Mejor Resultado:' | trans }}
                                                 </label>
-                                                <div class="controls">
-                                                    <div class="text">
-                                                        <div class="thumbnail" style="width: 200px; height: 150px;">
-                                                            <label for="" class="control-label bold">
-                                                                <img src="{{ resultados['src'][0] }}">
-                                                            </label>
-                                                            <label for="" class="control-label bold">
-                                                               {{ resultados['canales'][0] }}
-                                                            </label>
-                                                            <label for="" class="control-label bold">
-                                                               {{ resultados['precios'][0] }}
-                                                            </label>
+                                                {% if resultados|length > 0 %}
+                                                    <div class="controls">
+                                                        <div class="text">
+                                                            <div class="thumbnail" style="width: 200px; height: 150px;">
+                                                                <label for="" class="control-label bold">
+                                                                    <img src="{{ resultados[0].src }}">
+                                                                </label>
+                                                                <label for="" class="control-label bold">
+                                                                   {{ resultados[0].canal }}
+                                                                </label>
+                                                                <label for="" class="control-label bold">
+                                                                   {{ resultados[0].precio }}
+                                                                </label>
 
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                {% else %}
+                                                    <div class="controls">
+                                                        Sin resultados
+                                                    </div>
+                                                {% endif %}
                                             </div>
                                         </div>
-                                    <!--/span-->
+                                        <!--/span-->
+                                    </div>
                                 </div>
-                            </div>
-                            
+                            {% else  %}
+                                <div>{{ 'Esta consulta aun no se ha ejecutado' | trans }}</div>
+                            {% endif %}
                         </div>
-                    
+                    {% endfor %}
                 </div>              
                 <!--END TABS-->
                 <div class="form-actions">

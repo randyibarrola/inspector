@@ -29,7 +29,19 @@ dashboard_trivago_consulta_editar:
     pattern:  /trivago/consulta/editar/{id}
     defaults: { _controller: DashboardBundle:Trivago:edit }
     requirements:
+        id: \d+    
+        
+dashboard_trivago_consulta_ejecutar:
+    pattern:  /trivago/consulta/ejecutar/{id}
+    defaults: { _controller: DashboardBundle:Trivago:ejecutar }
+    requirements:
         id: \d+        
+        
+dashboard_trivago_consulta_ver:
+    pattern:  /trivago/consulta/ver/{id}
+    defaults: { _controller: DashboardBundle:Trivago:show }
+    requirements:
+        id: \d+          
   
 
 dashboard_usuario_cambiar_estado:

@@ -10,6 +10,7 @@ use Encuesta\ModeloBundle\Form\ConsultaType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormInterface;
 use Encuesta\ModeloBundle\Entity\Inspeccion;
+use Encuesta\ModeloBundle\Entity\InspeccionResultado;
 
 class TrivagoController extends Controller
 {
@@ -141,7 +142,61 @@ class TrivagoController extends Controller
             'obj' => $obj,
             'form' => $form->createView()
         ));
-    }     
+    }  
+    
+    public function showAction()
+    {
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
+
+        $obj = $em->getRepository('ModeloBundle:Consulta')->find($request->get('id'));
+        if(!$obj)
+            $this->createNotFoundException('No existe la consulta que está intentando editar');
+        
+               
+        return $this->render('DashboardBundle:Trivago:detalle.html.twig', array(
+            'consulta' => $obj
+        ));
+    }    
+    
+    public function ejecutarAction()
+    {
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
+
+        $obj = $em->getRepository('ModeloBundle:Consulta')->find($request->get('id'));
+        if(!$obj)
+            $this->createNotFoundException('No existe la consulta que está intentando editar');
+        
+        $inspecciones = $obj->getInspecciones();
+        foreach($inspecciones as $inspeccion){
+            if(!$inspeccion->getEjecutada()){
+                $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
+                
+                if(isset($resultados['canales'])) {   
+                    for($i = 0; $i < count($resultados['canales']); $i++ ){
+                        $inspResultado = new InspeccionResultado();
+                        $inspResultado->setInspeccion($inspeccion);
+                        $inspResultado->setCanal($resultados['canales'][$i]);
+                        $inspResultado->setPrecio($resultados['precios'][$i]);
+                        if($i === 0)
+                            $inspResultado->setMejor(1);
+                        $inspResultado->setSrc($resultados['src'][$i]);
+                        $em->persist($inspResultado);
+                    }
+                    $inspeccion->setFechaEjecucion(new \DateTime(date('Y-m-d')));
+                    $inspeccion->setEjecutada(1);
+                }
+
+                $em->persist($inspeccion);
+            }
+        }
+        
+        $em->flush();
+        return $this->render('DashboardBundle:Trivago:detalle.html.twig', array(
+            'consulta' => $obj            
+        ));
+    }      
     
     
 }

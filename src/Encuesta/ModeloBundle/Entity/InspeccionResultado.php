@@ -34,9 +34,9 @@ class InspeccionResultado
     private $inspeccion;    
 
     /**
-     * @var date
+     * @var string
      *
-     * @ORM\Column(name="canal", type="date", length=70, nullable=false)
+     * @ORM\Column(name="canal", type="string", length=70, nullable=false)
      */
     private $canal;
     
@@ -50,9 +50,16 @@ class InspeccionResultado
     /**
      * @var date
      *
-     * @ORM\Column(name="mejor", type="boolean")
+     * @ORM\Column(name="mejor", type="boolean", nullable=true)
      */
-    private $mejor;    
+    private $mejor; 
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="src", type="string", length=70, nullable=false)
+     */
+    private $src;    
     
     /**
      * @var datetime $created
@@ -220,5 +227,28 @@ class InspeccionResultado
     public function getInspeccion()
     {
         return $this->inspeccion;
+    }
+
+    /**
+     * Set src
+     *
+     * @param string $src
+     * @return InspeccionResultado
+     */
+    public function setSrc($src)
+    {
+        $this->src = $src;
+
+        return $this;
+    }
+
+    /**
+     * Get src
+     *
+     * @return string 
+     */
+    public function getSrc()
+    {
+        return $this->src;
     }
 }

@@ -94,8 +94,9 @@
                         <td></td>
                         <td>
                             <div class="hidden-print">
-                                <a class="btn mini blue imagen" data-nombre="" data-src=""  href="#" title="{{ 'Ver Detalles de la Consulta' | trans }}"><i class="icon-search icon-white"></i></a>
-                                <a class="btn mini green icn-only block-portlet" href="{{ path('dashboard_trivago_consulta_editar', { 'id': obj.id }) }}" title="{{ 'Editar' | trans }}"><i class="icon-edit icon-white"></i></a>                                
+                                <a class="btn mini blue" data-nombre="" data-src=""  href="{{ path('dashboard_trivago_consulta_ver', { 'id': obj.id }) }}" title="{{ 'Ver Detalles de la Consulta' | trans }}"><i class="icon-search icon-white"></i></a>
+                                <a class="btn mini green icn-only block-portlet" href="{{ path('dashboard_trivago_consulta_editar', { 'id': obj.id }) }}" title="{{ 'Editar' | trans }}"><i class="icon-edit icon-white"></i></a>    
+                                <a class="btn mini green icn-only block-portlet" title="{{ 'Ejecutar Consultas' | trans }}" href="{{ path('dashboard_trivago_consulta_ejecutar', { 'id': obj.id }) }}" title="{{ 'Editar' | trans }}"><i class="icon-play icon-white"></i></a>                                  
                                 <input type="hidden" value="{{ loop.index }}" class="table-row-index" />
                             </div>
                         </td>
