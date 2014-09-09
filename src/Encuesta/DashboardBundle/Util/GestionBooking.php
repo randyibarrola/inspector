@@ -39,8 +39,10 @@ class GestionBooking
                     'Accept: */*',
                     'Accept-Language: en-us,en;q=0.5',
                     'Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+                    'X-Requested-With: XMLHttpRequest',
                     'Connection: keep-alive'
                   );
+       
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $loginUrl);
         //curl_setopt($ch, CURLOPT_POST, 1);
@@ -525,12 +527,19 @@ class GestionBooking
         
     }
     
-    public static function getResultadosTrivago($url){
+    public static function getResultadosTrivago($url, $fecha_entrada, $fecha_salida){
             
             
-            $fechaArr = null;
-            $fechaDep = null;
-            if(substr_count($url, 'aDateRange[arr]') > 0){
+            //$fechaArr = null;
+            //$fechaDep = null;
+            $geo = null;
+            $ipath = null;
+            
+            $url = str_replace('%5B', '[', $url);
+            $url = str_replace('%5D', ']', $url);
+           
+            
+            /*if(substr_count($url, 'aDateRange[arr]') > 0){
                 $posicionArr = stripos($url, 'aDateRange[arr]');
                 $fechaArr = substr($url, $posicionArr+16, 10);
             }
@@ -538,13 +547,37 @@ class GestionBooking
             if(substr_count($url, 'aDateRange[dep]') > 0){
                 $posicionArr = stripos($url, 'aDateRange[dep]');
                 $fechaDep = substr($url, $posicionArr+16, 10);
-            }    
+            } */   
             
-            if($fechaArr && $fechaDep) {
+            if(substr_count($url, 'iGeoDistanceItem') > 0){
+                $posicionArr = stripos($url, 'iGeoDistanceItem');
+                $txtgeo = substr($url, $posicionArr+17, 6);
+                $geo = preg_replace("/[^0-9]/", "", $txtgeo);    
+               
+            }  
+            
+            if(substr_count($url, 'iPathId') > 0){
+                $posicionArr = stripos($url, 'iPathId');
+                $ipath = substr($url, $posicionArr+8, 5);
+            }             
+            
+            $dealUrl = 'http://www.trivago.es/search/slideout/deals/0/1/iGeoDistanceItem/iGeoDistanceItem/?iPathId=ipathid&aDateRange[arr]=arrive&aDateRange[dep]=departure&iRoomType=7&&_=1409965536717';
+            $dealUrl = str_replace('iGeoDistanceItem', $geo, $dealUrl);
+            $dealUrl = str_replace('ipathid', $ipath, $dealUrl);
+            //$dealUrl = str_replace('arrive', $fechaArr,$dealUrl );
+            //$dealUrl = str_replace('departure', $fechaDep, $dealUrl );
+            
+            $dealUrl = str_replace('arrive', $fecha_entrada,$dealUrl );
+            $dealUrl = str_replace('departure', $fecha_salida, $dealUrl );           
+            
+            
+            //if($fechaArr && $fechaDep) {
+            if($fecha_entrada && $fecha_salida) {
                 $intervalos = array();
-                $cantidadBooking = 0;
-                $resultados = self::getComparativaTrivago($url);
-                if($resultados['viable']){
+                $cantidadBooking = 0;                 
+                $resultados = self::getComparativaTrivago($dealUrl, $geo);
+               
+                /*if($resultados['viable']){
                     $cantidadBooking++;
                 }
                 $intervalos['hotel'] = $resultados['hotel'];
@@ -570,30 +603,61 @@ class GestionBooking
                     $intervalos[$i] = array('fecha_inicio' => $fechaArr, 'fecha_fin' => $fechaDep, 'resultados' => $resultados, 'url'=>$url );
                 }     
                 
-                $intervalos['porcentaje'] = number_format( ( $cantidadBooking * 100 ) / 12, 2 );
+                $intervalos['porcentaje'] = number_format( ( $cantidadBooking * 100 ) / 12, 2 );*/
                 
-                return $intervalos;
+                //return $intervalos;
+                return $resultados;
             }
             
             return array();
     }
     
-    public static function getComparativaTrivago($url)
+    public static function getComparativaTrivago($url, $geo = null)
     {
         $ch = self::LoginAtrapalo($url);
         $content = curl_exec($ch); 
         curl_close($ch);
         
+        $contenido = json_decode($content);
+        
+        //$hotel = $contenido->hotels[0];
+        $comparativa = $contenido->$geo->sHtml;
         
         $busqueda = array();
         $busqueda['mejor'] = array();
-        $busqueda['viable'] = false;
+        $busqueda['canales'] = array();
+        $busqueda['precios'] = false;
         
-//        $html = self::str_get_dom($content);   
-        $html = SimpleHtmlDom::my_file_get_html($content);  
+        //$html = self::str_get_dom($content);   
+        //echo $contenido->hotels[0]->html;die;
+        $html = SimpleHtmlDom::my_file_get_html($comparativa);  
         
-        $resultados = $html->find('div[class=item_bestprice]', 0);      
-        $strongs = $resultados->find('strong');
+        $canales = $html->find('div[class=deals_logo_wrapper] img'); 
+        $precios = $html->find('strong[class=price price_info]');
+        $existentes = array();
+        
+        foreach($canales as $key => $canal){ 
+           if(!in_array($canal->title,$busqueda['canales'])){
+            $busqueda['canales'][] = $canal->title;
+            $busqueda['src'][] = $canal->src;               
+           } else {
+              $existentes[]=$key; 
+           }
+
+        }
+        
+        foreach($precios as $key => $precio){
+            if(!in_array($key, $existentes)){
+                $p = str_replace(' â‚¬', '', $precio->plaintext); 
+                $p = str_replace(' €', '', $precio->plaintext); 
+                $p = str_replace('&nbsp;', 0, $precio->plaintext);
+                $busqueda['precios'][] = trim($p ); 
+            }
+            
+        }
+        
+        
+        /*
         
         foreach($strongs as $st){            
             $busqueda['mejor'][] = trim(  $st->plaintext );
@@ -601,8 +665,8 @@ class GestionBooking
                $busqueda['viable'] = true;
             }
         }
-        
-        
+        */
+        /*
         $contenedorCanales = $html->find('div[class=item_prices] div[class=item_main]', 0);
         $canales = $contenedorCanales->find('li[class=single_price]');
         foreach($canales as $key => $canal){
@@ -614,7 +678,8 @@ class GestionBooking
 
             //echo $nombre.'  '.$precio."\n";
         }
-        $busqueda['hotel'] = trim($html->find('h3[class=jsheadline]',0)->plaintext);
+        //$busqueda['hotel'] = trim($html->find('h3[class=jsheadline]',0)->plaintext);
+        */
         
         return $busqueda;
     }

@@ -57,6 +57,27 @@ class Consulta
     private $canal_consulta;
     
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="porcentaje_mayor", type="integer", nullable=true)
+     */
+    private $porcentaje_mayor;    
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="porcentaje_menor", type="integer", nullable=true)
+     */
+    private $porcentaje_menor;       
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="porcentaje_igual", type="integer", nullable=true)
+     */
+    private $porcentaje_igual;          
+    
+    /**
      * @var datetime $created
      *
      * @Gedmo\Timestampable(on="create")
@@ -260,5 +281,74 @@ class Consulta
     public function getInspecciones()
     {
         return $this->inspecciones;
+    }
+
+    /**
+     * Set porcentaje_mayor
+     *
+     * @param integer $porcentajeMayor
+     * @return Consulta
+     */
+    public function setPorcentajeMayor($porcentajeMayor)
+    {
+        $this->porcentaje_mayor = $porcentajeMayor;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentaje_mayor
+     *
+     * @return integer 
+     */
+    public function getPorcentajeMayor()
+    {
+        return $this->porcentaje_mayor;
+    }
+
+    /**
+     * Set porcentaje_menor
+     *
+     * @param integer $porcentajeMenor
+     * @return Consulta
+     */
+    public function setPorcentajeMenor($porcentajeMenor)
+    {
+        $this->porcentaje_menor = $porcentajeMenor;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentaje_menor
+     *
+     * @return integer 
+     */
+    public function getPorcentajeMenor()
+    {
+        return $this->porcentaje_menor;
+    }
+
+    /**
+     * Set porcentaje_igual
+     *
+     * @param integer $porcentajeIgual
+     * @return Consulta
+     */
+    public function setPorcentajeIgual($porcentajeIgual)
+    {
+        $this->porcentaje_igual = $porcentajeIgual;
+
+        return $this;
+    }
+
+    /**
+     * Get porcentaje_igual
+     *
+     * @return integer 
+     */
+    public function getPorcentajeIgual()
+    {
+        return $this->porcentaje_igual;
     }
 }

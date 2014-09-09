@@ -57,28 +57,8 @@ class Inspeccion
      *
      * @ORM\Column(name="fecha_fin", type="date", length=70, nullable=false)
      */
-    private $fecha_fin;    
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="porcentaje_mayor", type="integer")
-     */
-    private $porcentaje_mayor;    
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="porcentaje_menor", type="integer")
-     */
-    private $porcentaje_menor;       
-    
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="porcentaje_igual", type="integer")
-     */
-    private $porcentaje_igual;      
+    private $fecha_fin;  
+
     
     /**
      * @var datetime $created
@@ -96,7 +76,12 @@ class Inspeccion
      */
     private $updated;    
 
-
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="ejecutada", type="boolean", length=70, nullable=true)
+     */
+    private $ejecutada=false;      
 
 
     /**
@@ -355,5 +340,28 @@ class Inspeccion
     public function getResultados()
     {
         return $this->resultados;
+    }
+
+    /**
+     * Set ejecutada
+     *
+     * @param boolean $ejecutada
+     * @return Inspeccion
+     */
+    public function setEjecutada($ejecutada)
+    {
+        $this->ejecutada = $ejecutada;
+
+        return $this;
+    }
+
+    /**
+     * Get ejecutada
+     *
+     * @return boolean 
+     */
+    public function getEjecutada()
+    {
+        return $this->ejecutada;
     }
 }
