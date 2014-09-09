@@ -351,4 +351,27 @@ class Consulta
     {
         return $this->porcentaje_igual;
     }
+    
+    
+    public function setPorcentajesDesdeEstados($estados){
+        $total = count($estados);
+        $cantidades = array('mejor'=>0, 'igual'=>0, 'peor'=>0);
+        foreach ($estados as $estado){
+            switch ($estado){
+                case 1:
+                    $cantidades['mejor'] ++;
+                    break;
+                case 0:
+                    $cantidades['igual'] ++;
+                    break;
+                case -1:
+                    $cantidades['peor'] ++;
+                    break;                
+            }
+        }
+        
+        $this->setPorcentajeMenor( (100 * $cantidades['mejor'])/$total  );
+        $this->setPorcentajeIgual( (100 * $cantidades['igual'])/$total  );
+        $this->setPorcentajeMenor( (100 * $cantidades['peor'])/$total  );
+    }
 }

@@ -81,7 +81,15 @@ class Inspeccion
      *
      * @ORM\Column(name="ejecutada", type="boolean", length=70, nullable=true)
      */
-    private $ejecutada=false;      
+    private $ejecutada=false; 
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="estado_booking", type="integer", nullable=true)
+     */
+    private $estado_booking;      
+    
 
 
     /**
@@ -363,5 +371,28 @@ class Inspeccion
     public function getEjecutada()
     {
         return $this->ejecutada;
+    }
+
+    /**
+     * Set estado_booking
+     *
+     * @param integer $estadoBooking
+     * @return Inspeccion
+     */
+    public function setEstadoBooking($estadoBooking)
+    {
+        $this->estado_booking = $estadoBooking;
+
+        return $this;
+    }
+
+    /**
+     * Get estado_booking
+     *
+     * @return integer 
+     */
+    public function getEstadoBooking()
+    {
+        return $this->estado_booking;
     }
 }

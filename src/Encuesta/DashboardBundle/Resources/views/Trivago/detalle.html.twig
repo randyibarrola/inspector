@@ -67,21 +67,17 @@
                                     <h4 class="form-section visible-phone hidden-tablet hidden-desktop">{{ 'Información básica' | trans }}</h4>
                                     <div class="row-fluid">
                                         <div class="span6 ">
-                                            {% for resultado in resultados %}                                        
-                                                <div class="control-group">
-                                                    <label for="" class="control-label bold">
-                                                        <img src="{{ resultado.src }}">
+                                            <div class="control-group">
+                                            {% for resultado in resultados %}
+                                                {% set clase = loop.first ? 'label-success' : ( resultado.canal == 'Booking.com' ? 'label-danger' : '' ) %}
+                                                    <label for="" class="control-label bold {{ clase }}">
+                                                        {{ resultado.canal ~ ' ' ~ resultado.precio ~ ' €' ~ ' - '}}
                                                     </label>
-                                                    <label for="" class="control-label bold">
-                                                        {{ resultado.canal }}
-                                                    </label>
-                                                    <label for="" class="control-label bold">
-                                                        <span class="text">{{ resultado.precio ~ ' €'}}</span>
-                                                    </label>
-                                                </div>
                                             {% endfor %}
+                                            </div>
                                         </div>
                                         <!--/span-->
+                                        {#
                                         <div class="span6 ">                                                                       
                                             <div class="control-group">
                                                 <label for="" class="control-label bold">
@@ -110,7 +106,7 @@
                                                     </div>
                                                 {% endif %}
                                             </div>
-                                        </div>
+                                        </div>#}
                                         <!--/span-->
                                     </div>
                                 </div>
