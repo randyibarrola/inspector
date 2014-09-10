@@ -12,23 +12,12 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Jose/Documents/inspector/app/config/config.yml</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Resources/config/routing.yml</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Form/MedicoType.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Resources/views/Trivago/form.html.twig</file>
             <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Entity/Consulta.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Form/ConsultaType.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Resources/views/Default/sideBarMenu.html.twig</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Controller/DefaultController.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Entity/InspeccionResultado.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Controller/UserController.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/web/js/dashboard/table-turno.js</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Resources/views/Default/listTurnos.html.twig</file>
             <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Controller/TrivagoController.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Entity/Usuario.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/web/js/dashboard/table-consulta.js</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Entity/InspeccionResultado.php</file>
             <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Entity/Inspeccion.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Resources/views/Trivago/listado.html.twig</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Resources/views/Trivago/detalle.html.twig</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Controller/UserController.php</file>
         </group>
     </open-files>
 </project-private>
