@@ -172,6 +172,7 @@ class TrivagoController extends Controller
         $resultados = array();
         foreach($inspecciones as $inspeccion){
             if(!$inspeccion->getEjecutada()){
+                
                 $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
                 
                 if(isset($resultados['canales']) && count($resultados['canales']) > 0) {   
@@ -190,6 +191,7 @@ class TrivagoController extends Controller
                 }
 
                 $em->persist($inspeccion);
+                $resultados = array();
             }
         }
         
