@@ -370,8 +370,14 @@ class Consulta
             }
         }
         
-        $this->setPorcentajeMenor( (100 * $cantidades['mejor'])/$total  );
-        $this->setPorcentajeIgual( (100 * $cantidades['igual'])/$total  );
-        $this->setPorcentajeMenor( (100 * $cantidades['peor'])/$total  );
+        $this->setPorcentajeMenor( $total > 0 ? (100 * $cantidades['mejor'])/$total : 0  );
+        $this->setPorcentajeIgual( $total > 0 ?(100 * $cantidades['igual'])/$total : 0 );
+        $this->setPorcentajeMayor( $total > 0 ?(100 * $cantidades['peor'])/$total : 0 );
     }
+    
+    public function getPorcentajeTexto(){
+        return '+'.$this->porcentaje_menor.'%   ='.$this->porcentaje_igual.'%   -'.$this->porcentaje_mayor.'%';
+    }
+    
+    
 }

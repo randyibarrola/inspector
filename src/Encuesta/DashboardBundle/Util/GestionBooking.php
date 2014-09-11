@@ -649,7 +649,9 @@ class GestionBooking
         foreach($precios as $key => $precio){
             if(!in_array($key, $existentes)){
                 $p = str_replace(' â‚¬', '', $precio->plaintext); 
+                $p = str_replace('â‚¬', '', $precio->plaintext);
                 $p = str_replace(' €', '', $precio->plaintext); 
+                $p = str_replace('€', '', $precio->plaintext); 
                 $p = str_replace('&nbsp;', 0, $precio->plaintext);
                 $busqueda['precios'][] = trim($p ); 
             }

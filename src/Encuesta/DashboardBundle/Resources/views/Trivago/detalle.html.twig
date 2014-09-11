@@ -66,12 +66,13 @@
                                 <div class="tab-pane active" id="tib">
                                     <h4 class="form-section visible-phone hidden-tablet hidden-desktop">{{ 'Información básica' | trans }}</h4>
                                     <div class="row-fluid">
-                                        <div class="span6 ">
+                                        <div class="span12">
                                             <div class="control-group">
-                                            {% for resultado in resultados %}
-                                                {% set clase = loop.first ? 'label-success' : ( resultado.canal == 'Booking.com' ? 'label-danger' : '' ) %}
-                                                    <label for="" class="control-label bold {{ clase }}">
-                                                        {{ resultado.canal ~ ' ' ~ resultado.precio ~ ' €' ~ ' - '}}
+                                            
+                                            {% for resultado in resultados %}                                                
+                                                {% set clase = loop.first ? 'label label-success bold' : ( resultado.canal == 'Booking.com' ? 'label label-warning bold' : '' ) %}
+                                                    <label class="control-label bold ">
+                                                        <span class="{{ clase }}">{{ resultado.canal ~ ' ' ~ resultado.precio ~ ' €' }}</span>
                                                     </label>
                                             {% endfor %}
                                             </div>
