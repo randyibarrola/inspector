@@ -176,14 +176,20 @@ class TrivagoController extends Controller
             if(!$inspeccion->getEjecutada()){
                 $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
                 
-                if(isset($resultados['canales']) && count($resultados['canales'] == 0)){
-                    $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
-                }
+                
+                /*if(isset($resultados['canales']) && count($resultados['canales'] == 0)){
+                    for($i = 0; $i < 2; $i++){
+                        if(isset($resultados['canales']) && count($resultados['canales'] == 0)){
+                            $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
+                        }
+                    }
+                    
+                }*/
                 
                 $valorMenor = 0;
                 $estadoBooking = -1;
                 
-                if(isset($resultados['canales']) && count($resultados['canales']) > 0) {   
+                if(isset($resultados['canales']) && count($resultados['canales']) >= 0) {   
                     for($i = 0; $i < count($resultados['canales']); $i++ ){
                         $inspResultado = new InspeccionResultado();
                         $inspResultado->setInspeccion($inspeccion);

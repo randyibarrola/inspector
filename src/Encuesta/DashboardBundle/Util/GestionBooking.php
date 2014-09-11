@@ -616,8 +616,7 @@ class GestionBooking
     {
         $ch = self::LoginAtrapalo($url);
         $content = curl_exec($ch); 
-        curl_close($ch);
-        
+        curl_close($ch); 
         $contenido = json_decode($content);
         
         //$hotel = $contenido->hotels[0];
