@@ -181,7 +181,7 @@ class TrivagoController extends Controller
                 }
                 
                 $valorMenor = 0;
-                $estadoBooking = null;
+                $estadoBooking = -1;
                 
                 if(isset($resultados['canales']) && count($resultados['canales']) > 0) {   
                     for($i = 0; $i < count($resultados['canales']); $i++ ){
@@ -211,6 +211,9 @@ class TrivagoController extends Controller
 
                 $em->persist($inspeccion);
                 
+            }
+            else {
+               $estados[]= $inspeccion->getEstadoBooking(); 
             }
         }
         $obj->setPorcentajesDesdeEstados($estados);

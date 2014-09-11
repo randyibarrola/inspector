@@ -646,14 +646,15 @@ class GestionBooking
 
         }
         
-        foreach($precios as $key => $precio){
+        foreach($precios as $key => $precio){            
             if(!in_array($key, $existentes)){
-                $p = str_replace(' â‚¬', '', $precio->plaintext); 
-                $p = str_replace('â‚¬', '', $precio->plaintext);
-                $p = str_replace(' €', '', $precio->plaintext); 
-                $p = str_replace('€', '', $precio->plaintext); 
-                $p = str_replace('&nbsp;', 0, $precio->plaintext);
-                $busqueda['precios'][] = trim($p ); 
+                $p =  trim($precio->plaintext );
+                $p = str_replace(' â‚¬', '', $p); 
+                $p = str_replace('â‚¬', '', $p);
+                $p = str_replace(' €', '', $p); 
+                $p = str_replace('€', '', $p); 
+                $p = str_replace('&nbsp;', 0, $p);
+                $busqueda['precios'][] = $p ; 
             }
             
         }
