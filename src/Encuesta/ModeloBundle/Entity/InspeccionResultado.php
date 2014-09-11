@@ -28,7 +28,7 @@ class InspeccionResultado
      *
      * @ORM\ManyToOne(targetEntity="Inspeccion")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="inspeccion_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="inspeccion_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $inspeccion;    

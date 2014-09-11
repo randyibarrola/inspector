@@ -41,7 +41,13 @@ dashboard_trivago_consulta_ver:
     pattern:  /trivago/consulta/ver/{id}
     defaults: { _controller: DashboardBundle:Trivago:show }
     requirements:
-        id: \d+          
+        id: \d+     
+        
+dashboard_trivago_consulta_eliminar:
+    pattern:  /trivago/consulta/eliminar/{id}
+    defaults: { _controller: DashboardBundle:Trivago:delete }
+    requirements:
+        id: \d+           
   
 
 dashboard_usuario_cambiar_estado:

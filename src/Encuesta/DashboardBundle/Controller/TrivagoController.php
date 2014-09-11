@@ -219,7 +219,22 @@ class TrivagoController extends Controller
         return $this->render('DashboardBundle:Trivago:detalle.html.twig', array(
             'consulta' => $obj            
         ));
-    }      
+    }    
+    
+    public function deleteAction()
+    {
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
+
+        $obj = $em->getRepository('ModeloBundle:Consulta')->find($request->get('id'));
+        if(!$obj)
+            $this->createNotFoundException('No existe la consulta que está intentando editar');
+        
+        $em->remove($obj);  
+        $em->flush();
+        
+        return $this->redirect($this->generateUrl( 'dashboard_trivago_consultas'));
+    }     
     
     
 }

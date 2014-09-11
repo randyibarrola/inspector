@@ -28,7 +28,7 @@ class Inspeccion
      *
      * @ORM\ManyToOne(targetEntity="Consulta")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="consulta_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="consulta_id", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $consulta;  
