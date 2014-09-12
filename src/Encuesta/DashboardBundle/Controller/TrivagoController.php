@@ -305,6 +305,7 @@ class TrivagoController extends Controller
                             }
                         }
                         //$inspResultado->setSrc($resultados['src'][$i]);
+                        $inspeccion->setUrl($resultados['url']);
                         $em->persist($inspResultado);
                         
                         

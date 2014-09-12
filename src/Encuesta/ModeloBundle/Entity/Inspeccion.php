@@ -88,7 +88,15 @@ class Inspeccion
      *
      * @ORM\Column(name="estado_booking", type="integer", nullable=true)
      */
-    private $estado_booking;      
+    private $estado_booking;   
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="string", nullable=true)
+     */
+    private $url;     
     
 
 
@@ -398,5 +406,28 @@ class Inspeccion
     
     public function __toString() {
         return '$this->fecha_ejecucion;';
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Inspeccion
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string 
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 }

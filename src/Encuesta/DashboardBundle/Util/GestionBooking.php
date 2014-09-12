@@ -625,8 +625,8 @@ class GestionBooking
         
         $busqueda = array();
         $busqueda['mejor'] = array();
-        $busqueda['canales'] = array();
-        $busqueda['precios'] = false;
+        $busqueda['canales'] = array();        
+        $busqueda['precios'] = array();
         
         //$html = self::str_get_dom($content);   
         //echo $contenido->hotels[0]->html;die;
@@ -683,7 +683,8 @@ class GestionBooking
         }
         //$busqueda['hotel'] = trim($html->find('h3[class=jsheadline]',0)->plaintext);
         */
-        
+        $busqueda['url'] = $url;
+
         return $busqueda;
     }
     
