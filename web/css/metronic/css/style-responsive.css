@@ -24,7 +24,7 @@
 		margin-bottom: 15px !important;
 	}
 
-	.page-sidebar-fixed.page-sidebar-hover-on .page-sidebar {
+	/*.page-sidebar-fixed.page-sidebar-hover-on .page-sidebar {
 		z-index: 10000;		
 		width: 35px;		
 	}
@@ -38,7 +38,7 @@
 	}
 	.page-sidebar-fixed.page-sidebar-hover-on .footer {
 		margin-left: 35px;
-	}
+	}*/
 
 	.page-sidebar-fixed .page-sidebar-closed .page-sidebar .sidebar-search .submit,
 	.page-sidebar-fixed .page-sidebar .sidebar-toggler {

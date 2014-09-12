@@ -551,7 +551,7 @@ class GestionBooking
             
             if(substr_count($url, 'iGeoDistanceItem') > 0){
                 $posicionArr = stripos($url, 'iGeoDistanceItem');
-                $txtgeo = substr($url, $posicionArr+17, 6);
+                $txtgeo = substr($url, $posicionArr+17, 7);
                 $geo = preg_replace("/[^0-9]/", "", $txtgeo);    
                
             }  
@@ -617,6 +617,7 @@ class GestionBooking
         $ch = self::LoginAtrapalo($url);
         $content = curl_exec($ch); 
         curl_close($ch); 
+        
         $contenido = json_decode($content);
         
         //$hotel = $contenido->hotels[0];
@@ -638,7 +639,7 @@ class GestionBooking
         foreach($canales as $key => $canal){ 
            if(!in_array($canal->title,$busqueda['canales'])){
             $busqueda['canales'][] = $canal->title;
-            $busqueda['src'][] = $canal->src;               
+            //$busqueda['src'][] = $canal->src;               
            } else {
               $existentes[]=$key; 
            }

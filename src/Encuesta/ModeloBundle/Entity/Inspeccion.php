@@ -395,4 +395,8 @@ class Inspeccion
     {
         return $this->estado_booking;
     }
+    
+    public function __toString() {
+        return '$this->fecha_ejecucion;';
+    }
 }

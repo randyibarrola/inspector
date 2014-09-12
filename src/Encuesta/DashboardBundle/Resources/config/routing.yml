@@ -35,7 +35,13 @@ dashboard_trivago_consulta_ejecutar:
     pattern:  /trivago/consulta/ejecutar/{id}
     defaults: { _controller: DashboardBundle:Trivago:ejecutar }
     requirements:
-        id: \d+        
+        id: \d+   
+        
+dashboard_trivago_consulta_ejecutar_instacia:
+    pattern:  /trivago/consulta/ejecutar/instancia/{id}
+    defaults: { _controller: DashboardBundle:Trivago:ejecutar1 }
+    requirements:
+        id: \d+         
         
 dashboard_trivago_consulta_ver:
     pattern:  /trivago/consulta/ver/{id}

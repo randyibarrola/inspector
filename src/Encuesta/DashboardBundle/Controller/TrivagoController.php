@@ -97,8 +97,9 @@ class TrivagoController extends Controller
                 }
                 
                 $em->flush();
+                $resultados = GestionBooking::getResultadosTrivago($data->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
               
-                
+                $response->setUrl( $this->generateUrl('dashboard_trivago_consultas') );
                 $response->setMessage($translator->trans('La consulta se ha guardado satisfactoriamente'));
             }
             else {
@@ -133,7 +134,8 @@ class TrivagoController extends Controller
         if($request->getMethod() == 'POST') {
             
             $response = $this->save($form, $request);
-
+            
+            
             return $response;
         }
 
@@ -171,14 +173,21 @@ class TrivagoController extends Controller
         $inspecciones = $obj->getInspecciones();
         $estados = array();
         $resultados = array();
-
+        $ahora = new \DateTime('now');
+        
+        
+        
         foreach($inspecciones as $inspeccion){
-            if(!$inspeccion->getEjecutada()){
+            if($inspeccion->getFechaInicio() > $ahora){
+                //borrando resultados
+
+                
                 $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
                 
+
                 
                 /*if(isset($resultados['canales']) && count($resultados['canales'] == 0)){
-                    for($i = 0; $i < 2; $i++){
+                    for($i = 0; $i < 1; $i++){
                         if(isset($resultados['canales']) && count($resultados['canales'] == 0)){
                             $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
                         }
@@ -189,8 +198,9 @@ class TrivagoController extends Controller
                 $valorMenor = 0;
                 $estadoBooking = -1;
                 
-                if(isset($resultados['canales']) && count($resultados['canales']) >= 0) {   
-                    for($i = 0; $i < count($resultados['canales']); $i++ ){
+                if(isset($resultados['canales']) && count($resultados['canales']) >= 0) {  
+                    
+                    for($i = 0; $i < count($resultados['canales']); $i++ ){                        
                         $inspResultado = new InspeccionResultado();
                         $inspResultado->setInspeccion($inspeccion);
                         $inspResultado->setCanal($resultados['canales'][$i]);
@@ -206,29 +216,127 @@ class TrivagoController extends Controller
                                $estadoBooking = $resultados['precios'][$i] == $valorMenor ? 0 : -1;  
                             }
                         }
-                        $inspResultado->setSrc($resultados['src'][$i]);
+                        //$inspResultado->setSrc($resultados['src'][$i]);
                         $em->persist($inspResultado);
+                        
+                        
                     }
                     $inspeccion->setFechaEjecucion(new \DateTime(date('Y-m-d')));
                     $inspeccion->setEjecutada(1);
                     $inspeccion->setEstadoBooking($estadoBooking);
                     $estados[]= $estadoBooking;
+                    
                 }
 
                 $em->persist($inspeccion);
-                
+                //$em->flush(); 
             }
             else {
                $estados[]= $inspeccion->getEstadoBooking(); 
             }
         }
+        
+
+        
         $obj->setPorcentajesDesdeEstados($estados);
         $em->persist($obj);
-        $em->flush();
+        //$em->flush();     
+        
+        return $this->redirect($this->generateUrl('dashboard_trivago_consulta_ejecutar_instacia', array('id'=>$request->get('id'))));
+
+        
         return $this->render('DashboardBundle:Trivago:detalle.html.twig', array(
             'consulta' => $obj            
         ));
-    }    
+    } 
+    
+    
+    public function ejecutar1Action()
+    {
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
+
+        $obj = $em->getRepository('ModeloBundle:Consulta')->find($request->get('id'));
+        if(!$obj)
+            $this->createNotFoundException('No existe la consulta que está intentando editar');
+        
+        $inspecciones = $obj->getInspecciones();
+        $estados = array();
+        $resultados = array();
+        $ahora = new \DateTime('now');
+        
+        GestionBooking::getResultadosTrivago($obj->getUrl(), $ahora->format('Y-m-d'), $ahora->format('Y-m-d'));
+        
+        foreach($inspecciones as $inspeccion){
+            if($inspeccion->getFechaInicio() > $ahora){
+                //borrando resultados
+
+                
+                $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
+                
+                /*if(isset($resultados['canales']) && count($resultados['canales'] == 0)){
+                    for($i = 0; $i < 1; $i++){
+                        if(isset($resultados['canales']) && count($resultados['canales'] == 0)){
+                            $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
+                        }
+                    }
+                    
+                }*/
+                
+                $valorMenor = 0;
+                $estadoBooking = -1;
+                
+                if(isset($resultados['canales']) && count($resultados['canales']) >= 0) {  
+                    
+                    for($i = 0; $i < count($resultados['canales']); $i++ ){                        
+                        $inspResultado = new InspeccionResultado();
+                        $inspResultado->setInspeccion($inspeccion);
+                        $inspResultado->setCanal($resultados['canales'][$i]);
+                        $inspResultado->setPrecio($resultados['precios'][$i]);
+                        if($i === 0){
+                            $inspResultado->setMejor(1);
+                            $valorMenor= $resultados['precios'][$i];
+                            if($resultados['canales'][$i] == 'Booking.com'){
+                               $estadoBooking = 1;  
+                            }
+                        } else {
+                            if($resultados['canales'][$i] == 'Booking.com'){
+                               $estadoBooking = $resultados['precios'][$i] == $valorMenor ? 0 : -1;  
+                            }
+                        }
+                        //$inspResultado->setSrc($resultados['src'][$i]);
+                        $em->persist($inspResultado);
+                        
+                        
+                    }
+                    $inspeccion->setFechaEjecucion(new \DateTime(date('Y-m-d')));
+                    $inspeccion->setEjecutada(1);
+                    $inspeccion->setEstadoBooking($estadoBooking);
+                    $estados[]= $estadoBooking;
+                    
+                }
+
+                $em->persist($inspeccion);
+                $em->flush(); 
+            }
+            else {
+               $estados[]= $inspeccion->getEstadoBooking(); 
+            }
+        }
+        
+
+        
+        $obj->setPorcentajesDesdeEstados($estados);
+        $em->persist($obj);
+        $em->flush();     
+        
+        
+
+        
+        return $this->render('DashboardBundle:Trivago:detalle.html.twig', array(
+            'consulta' => $obj            
+        ));
+    }        
     
     public function deleteAction()
     {

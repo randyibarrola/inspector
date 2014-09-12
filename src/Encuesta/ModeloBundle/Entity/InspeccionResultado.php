@@ -50,14 +50,21 @@ class InspeccionResultado
     /**
      * @var date
      *
+     * @ORM\Column(name="antigua", type="boolean", nullable=true)
+     */
+    private $antigua; 
+    
+    /**
+     * @var date
+     *
      * @ORM\Column(name="mejor", type="boolean", nullable=true)
      */
-    private $mejor; 
+    private $mejor;     
     
     /**
      * @var string
      *
-     * @ORM\Column(name="src", type="string", length=70, nullable=false)
+     * @ORM\Column(name="src", type="string", length=70, nullable=true)
      */
     private $src;    
     
@@ -250,5 +257,28 @@ class InspeccionResultado
     public function getSrc()
     {
         return $this->src;
+    }
+
+    /**
+     * Set antigua
+     *
+     * @param boolean $antigua
+     * @return InspeccionResultado
+     */
+    public function setAntigua($antigua)
+    {
+        $this->antigua = $antigua;
+
+        return $this;
+    }
+
+    /**
+     * Get antigua
+     *
+     * @return boolean 
+     */
+    public function getAntigua()
+    {
+        return $this->antigua;
     }
 }

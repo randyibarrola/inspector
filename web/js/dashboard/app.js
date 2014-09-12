@@ -259,7 +259,7 @@ var App = function () {
     }
 
     var handleFixedSidebarHoverable = function () {
-        if ($('body').hasClass('page-sidebar-fixed') === false) {
+        /*if ($('body').hasClass('page-sidebar-fixed') === false) {
             return;
         }
 
@@ -290,10 +290,10 @@ var App = function () {
             $(this).animate({
                 width: sidebarCollapsedWidth
             }, 400, '', function () {
-                $('body').addClass('page-sidebar-closed').removeClass('page-sidebar-hover-on');
+                //$('body').addClass('page-sidebar-closed').removeClass('page-sidebar-hover-on');
                 $(this).removeClass('page-sidebar-hovering');
             });
-        });
+        });*/
     }
 
     var handleSidebarToggler = function () {

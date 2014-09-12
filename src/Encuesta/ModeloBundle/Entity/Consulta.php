@@ -24,7 +24,7 @@ class Consulta
     /**
     * @var ArrayCollection $inspecciones
     *
-    * @ORM\OneToMany(targetEntity="Inspeccion", mappedBy="consulta")
+    * @ORM\OneToMany(targetEntity="Inspeccion", mappedBy="consulta", cascade={"remove"})
     */
     protected $inspecciones; 
 
