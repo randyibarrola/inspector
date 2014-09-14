@@ -8,7 +8,8 @@ use Encuesta\ModeloBundle\Entity\Inspeccion;
 
 /**
 * @ORM\Entity
-* @ORM\Entity(repositoryClass="AEncuesta\ModeloBundle\Entity\ConsultaRepository")*
+ *@ORM\Table(name="consulta")
+* @ORM\Entity(repositoryClass="Encuesta\ModeloBundle\Entity\ConsultaRepository")*
 */
 class Consulta
 {
