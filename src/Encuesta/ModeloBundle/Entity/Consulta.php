@@ -7,8 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Encuesta\ModeloBundle\Entity\Inspeccion;
 
 /**
+ * 
+ * @ORM\Table(name="consulta")
 * @ORM\Entity
- *@ORM\Table(name="consulta")
+*
 * @ORM\Entity(repositoryClass="Encuesta\ModeloBundle\Entity\ConsultaRepository")*
 */
 class Consulta
@@ -429,16 +431,16 @@ class Consulta
     
     public function getPorcentajeMenorTexto(){
         $valor = $this->promedio_menor > 0 ? ($this->promedio_igual - $this->promedio_menor) : 0;
-        return '-'.$this->porcentaje_menor.'% ( € '.number_format($valor, 2, ',', '.').' )';
+        return '-'.number_format($this->porcentaje_menor, 2, ',', '.').'% ( € '.number_format($valor, 2, ',', '.').' )';
     }
     
     public function getPorcentajeMayorTexto(){
         $valor = $this->promedio_mayor > 0 ? ($this->promedio_mayor - $this->promedio_igual) : 0;
-        return '+'.$this->porcentaje_mayor.'% ( € '. number_format($valor, 2, ',', '.') .' )';
+        return '+'. number_format($this->porcentaje_mayor, 2, ',', '.').'% ( € '. number_format($valor, 2, ',', '.') .' )';
     }
     
     public function getPorcentajeIgualTexto(){
-        return '='.$this->porcentaje_igual.'% ( € '.number_format($this->promedio_igual, 2, ',', '.').' )';
+        return '='.number_format($this->porcentaje_igual, 2, ',', '.').'% ( € '.number_format($this->promedio_igual, 2, ',', '.').' )';
     }    
     
     public function getPorcentajeTexto(){
