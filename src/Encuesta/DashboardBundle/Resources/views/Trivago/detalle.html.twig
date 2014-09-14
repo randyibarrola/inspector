@@ -41,6 +41,9 @@
                 <a href="javascript:;" class="collapse"></a>
             </div>
             <div class="actions">
+                <a class="btn blue table-actions-new block-portlet" href="{{ path('dashboard_trivago_consulta_ejecutar', { 'id': consulta.id }) }}">
+                    <i class="icon-play"></i> <span class="hidden-phone">{{ 'Ejecutar nuevamente la consulta' | trans }}</span>
+                </a>                 
                 <a class="btn blue table-actions-new block-portlet" href="{{ path('dashboard_trivago_consultas') }}">
                     <i class="icon-list"></i> <span class="hidden-phone">{{ 'Regresar al listado' | trans }}</span>
                 </a>                
@@ -52,9 +55,9 @@
         <div class="portlet-body form">
             <!-- BEGIN FORM-->
             <div class="form-horizontal form-view">
-                <h3 class="hidden-phone"> {{ consulta.hotel }} </h3>
+                <h3 class="hidden-phone"> {{ consulta.hotel }} <span class="label label-success">{{ consulta.porcentajeMenorTexto | raw }}</span><span class="label label-primary">{{ consulta.porcentajeIgualTexto | raw }}</span><span class="label label-warning">{{ consulta.porcentajeMayorTexto | raw }}</span></h3>
                 <!--BEGIN TABS-->
-                <div class="tabbable tabbable-custom">
+                <div class="tabbable tabbable-custom">                    
                     {% for inspeccion in consulta.inspecciones %}
                     {% set resultados = inspeccion.resultados %}
                         <ul class="nav nav-tabs">
@@ -112,6 +115,7 @@
                                         <!--/span-->
                                     </div>
                                 </div>
+                                
                             {% else  %}
                                 <div>{{ 'Esta consulta aun no se ha ejecutado' | trans }}</div>
                             {% endif %}

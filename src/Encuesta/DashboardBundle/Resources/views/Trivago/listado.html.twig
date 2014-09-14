@@ -91,7 +91,7 @@
                     <tr class="table-row">
                         <td>{{ obj.nombre }}</td>
                         <td class="hidden-phone">{{ obj.hotel }}</td>
-                        <td>{{ obj.porcentajeTexto | raw }}</td>
+                        <td><span class="label label-success">{{ obj.porcentajeMenorTexto | raw }}</span><span class="label label-primary">{{ obj.porcentajeIgualTexto | raw }}</span><span class="label label-warning">{{ obj.porcentajeMayorTexto | raw }}</span></td>
                         <td>
                             <div class="hidden-print">
                                 <a class="btn mini blue" data-nombre="" data-src=""  href="{{ path('dashboard_trivago_consulta_ver', { 'id': obj.id }) }}" title="{{ 'Ver Detalles de la Consulta' | trans }}"><i class="icon-search icon-white"></i></a>

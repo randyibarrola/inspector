@@ -614,15 +614,17 @@ class GestionBooking
     
     public static function getComparativaTrivago($url, $geo = null)
     {
-        $ch = self::LoginAtrapalo($url);
-        $content = curl_exec($ch); 
-        curl_close($ch); 
-        
-        $contenido = json_decode($content);
-        
-        //$hotel = $contenido->hotels[0];
-        $comparativa = $contenido->$geo->sHtml;
-        
+        $comparativa = "";    
+        $iteracion = 1;
+        while( strlen($comparativa) < 130  ){
+            $ch = self::LoginAtrapalo($url);
+            $content = curl_exec($ch); 
+            curl_close($ch);
+            $contenido = json_decode($content);
+            $comparativa = $contenido->$geo->sHtml;
+            
+        }
+                
         $busqueda = array();
         $busqueda['mejor'] = array();
         $busqueda['canales'] = array();        
@@ -659,30 +661,7 @@ class GestionBooking
             
         }
         
-        
-        /*
-        
-        foreach($strongs as $st){            
-            $busqueda['mejor'][] = trim(  $st->plaintext );
-            if( substr_count(strtolower( trim(  $st->plaintext ) ) , 'booking.com') ){
-               $busqueda['viable'] = true;
-            }
-        }
-        */
-        /*
-        $contenedorCanales = $html->find('div[class=item_prices] div[class=item_main]', 0);
-        $canales = $contenedorCanales->find('li[class=single_price]');
-        foreach($canales as $key => $canal){
-            $nombre = $canal->find('em', 0);
-            $busqueda['otros'][$key] = array();
-            $busqueda['otros'][$key]['nombre'] = $nombre->plaintext;            
-            $precio = $canal->find('strong', 0);
-            $busqueda['otros'][$key]['precio'] = $precio->plaintext;   
-
-            //echo $nombre.'  '.$precio."\n";
-        }
-        //$busqueda['hotel'] = trim($html->find('h3[class=jsheadline]',0)->plaintext);
-        */
+       
         $busqueda['url'] = $url;
 
         return $busqueda;

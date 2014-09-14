@@ -43,7 +43,7 @@ class InspeccionResultado
     /**
      * @var decimal
      *
-     * @ORM\Column(name="precio", type="decimal",  nullable=false)
+     * @ORM\Column(name="precio", type="decimal",  nullable=false, scale=2)
      */
     private $precio;  
 

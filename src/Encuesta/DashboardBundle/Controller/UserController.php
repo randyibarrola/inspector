@@ -144,9 +144,11 @@ class UserController extends Controller
         $response = $this->get('dashboard.ajaxresponse');
         try {
             $form->bind($request);
-            
+            $data = $form->getData();
+            $email = $data->getEmail();
+            $user = $em->getRepository('ModeloBundle:Usuario')->findOneBy(array('email'=>$email));
            
-            if($form->isValid()) {
+            if($form->isValid() && !$user) {
 
                 $data = $form->getData();
                 $origen = $data->getImagen();

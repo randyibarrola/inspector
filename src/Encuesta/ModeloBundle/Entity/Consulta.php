@@ -22,6 +22,16 @@ class Consulta
     private $id;    
     
     /**
+     * @var Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="Usuario")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="usuario_id", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    private $usuario;      
+    
+    /**
     * @var ArrayCollection $inspecciones
     *
     * @ORM\OneToMany(targetEntity="Inspeccion", mappedBy="consulta", cascade={"remove"})
@@ -64,18 +74,40 @@ class Consulta
     private $porcentaje_mayor;    
     
     /**
+     * @var decimal
+     *
+     * @ORM\Column(name="promedio_mayor", type="decimal", nullable=true, scale=2)
+     */
+    private $promedio_mayor;        
+    
+    /**
      * @var integer
      *
      * @ORM\Column(name="porcentaje_menor", type="integer", nullable=true)
      */
-    private $porcentaje_menor;       
+    private $porcentaje_menor;     
+    
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="promedio_menor", type="decimal", nullable=true, scale=2)
+     */
+    private $promedio_menor;            
     
     /**
      * @var integer
      *
      * @ORM\Column(name="porcentaje_igual", type="integer", nullable=true)
      */
-    private $porcentaje_igual;          
+    private $porcentaje_igual;    
+    
+    
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="promedio_igual", type="decimal", nullable=true, scale=2)
+     */
+    private $promedio_igual;      
     
     /**
      * @var datetime $created
@@ -375,9 +407,134 @@ class Consulta
         $this->setPorcentajeMayor( $total > 0 ?(100 * $cantidades['peor'])/$total : 0 );
     }
     
-    public function getPorcentajeTexto(){
-        return '+'.$this->porcentaje_menor.'%   ='.$this->porcentaje_igual.'%   -'.$this->porcentaje_mayor.'%';
+    public function setPromediosDesdePrecios($promedios){
+        $total = count($promedios['menor']);
+        $suma = 0;
+        foreach($promedios['menor'] as $menor)
+            $suma += $menor;
+        $this->setPromedioMenor( $total > 0 ? ($suma)/$total : 0  );
+        $total = count($promedios['igual']);
+        $suma = 0;
+        foreach($promedios['igual'] as $igual)
+            $suma += $igual;
+        $this->setPromedioIgual( $total > 0 ? ($suma)/$total : 0  );   
+        $total = count($promedios['mayor']);
+        $suma = 0;
+        foreach($promedios['mayor'] as $mayor)
+            $suma += $mayor;        
+        $this->setPromedioMayor( $total > 0 ? ($suma)/$total : 0  );         
     }
     
     
+    public function getPorcentajeMenorTexto(){
+        $valor = $this->promedio_menor > 0 ? ($this->promedio_igual - $this->promedio_menor) : 0;
+        return '-'.$this->porcentaje_menor.'% ( € '.number_format($valor, 2, ',', '.').' )';
+    }
+    
+    public function getPorcentajeMayorTexto(){
+        $valor = $this->promedio_mayor > 0 ? ($this->promedio_mayor - $this->promedio_igual) : 0;
+        return '+'.$this->porcentaje_mayor.'% ( € '. number_format($valor, 2, ',', '.') .' )';
+    }
+    
+    public function getPorcentajeIgualTexto(){
+        return '='.$this->porcentaje_igual.'% ( € '.number_format($this->promedio_igual, 2, ',', '.').' )';
+    }    
+    
+    public function getPorcentajeTexto(){
+        return '-'.$this->porcentaje_menor.'%   ='.$this->porcentaje_igual.'%   +'.$this->porcentaje_mayor.'%';
+    }
+    
+    
+
+    /**
+     * Set promedio_mayor
+     *
+     * @param string $promedioMayor
+     * @return Consulta
+     */
+    public function setPromedioMayor($promedioMayor)
+    {
+        $this->promedio_mayor = $promedioMayor;
+
+        return $this;
+    }
+
+    /**
+     * Get promedio_mayor
+     *
+     * @return string 
+     */
+    public function getPromedioMayor()
+    {
+        return $this->promedio_mayor;
+    }
+
+    /**
+     * Set promedio_menor
+     *
+     * @param string $promedioMenor
+     * @return Consulta
+     */
+    public function setPromedioMenor($promedioMenor)
+    {
+        $this->promedio_menor = $promedioMenor;
+
+        return $this;
+    }
+
+    /**
+     * Get promedio_menor
+     *
+     * @return string 
+     */
+    public function getPromedioMenor()
+    {
+        return $this->promedio_menor;
+    }
+
+    /**
+     * Set promedio_igual
+     *
+     * @param string $promedioIgual
+     * @return Consulta
+     */
+    public function setPromedioIgual($promedioIgual)
+    {
+        $this->promedio_igual = $promedioIgual;
+
+        return $this;
+    }
+
+    /**
+     * Get promedio_igual
+     *
+     * @return string 
+     */
+    public function getPromedioIgual()
+    {
+        return $this->promedio_igual;
+    }
+
+    /**
+     * Set usuario
+     *
+     * @param \Encuesta\ModeloBundle\Entity\Usuario $usuario
+     * @return Consulta
+     */
+    public function setUsuario(\Encuesta\ModeloBundle\Entity\Usuario $usuario = null)
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    /**
+     * Get usuario
+     *
+     * @return \Encuesta\ModeloBundle\Entity\Usuario 
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
 }

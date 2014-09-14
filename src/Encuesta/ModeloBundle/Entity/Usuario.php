@@ -27,7 +27,13 @@ class Usuario implements AdvancedUserInterface, \Serializable
      */
     private $id;
 
-
+    /**
+    * @var ArrayCollection $consultas
+    *
+    * @ORM\OneToMany(targetEntity="Consulta", mappedBy="usuario", cascade={"remove"})
+    */
+    protected $consultas; 
+    
     /**
      * @var string
      *
@@ -148,8 +154,7 @@ class Usuario implements AdvancedUserInterface, \Serializable
      * Constructor
      */
     public function __construct()
-    {
-        $this->eventos = new \Doctrine\Common\Collections\ArrayCollection();
+    {        
         $this->usuario_roles = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
@@ -409,38 +414,7 @@ class Usuario implements AdvancedUserInterface, \Serializable
         return $this->updated_at;
     }
 
-    /**
-     * Add eventos
-     *
-     * @param \Encuesta\ModeloBundle\Entity\Evento $eventos
-     * @return Usuario
-     */
-    public function addEvento(\Encuesta\ModeloBundle\Entity\Evento $eventos)
-    {
-        $this->eventos[] = $eventos;
-    
-        return $this;
-    }
 
-    /**
-     * Remove eventos
-     *
-     * @param \Encuesta\ModeloBundle\Entity\Evento $eventos
-     */
-    public function removeEvento(\Encuesta\ModeloBundle\Entity\Evento $eventos)
-    {
-        $this->eventos->removeElement($eventos);
-    }
-
-    /**
-     * Get eventos
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getEventos()
-    {
-        return $this->eventos;
-    }
 
     /**
      * Add usuario_roles
@@ -662,4 +636,37 @@ class Usuario implements AdvancedUserInterface, \Serializable
             
         return false;    
     }    
+
+    /**
+     * Add consultas
+     *
+     * @param \Encuesta\ModeloBundle\Entity\Consulta $consultas
+     * @return Usuario
+     */
+    public function addConsulta(\Encuesta\ModeloBundle\Entity\Consulta $consultas)
+    {
+        $this->consultas[] = $consultas;
+
+        return $this;
+    }
+
+    /**
+     * Remove consultas
+     *
+     * @param \Encuesta\ModeloBundle\Entity\Consulta $consultas
+     */
+    public function removeConsulta(\Encuesta\ModeloBundle\Entity\Consulta $consultas)
+    {
+        $this->consultas->removeElement($consultas);
+    }
+
+    /**
+     * Get consultas
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getConsultas()
+    {
+        return $this->consultas;
+    }
 }
