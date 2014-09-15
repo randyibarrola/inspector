@@ -110,7 +110,14 @@ class Consulta
      *
      * @ORM\Column(name="promedio_igual", type="decimal", nullable=true, scale=2)
      */
-    private $promedio_igual;      
+    private $promedio_igual;   
+    
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="aprobacion", type="decimal", nullable=true, scale=2)
+     */
+    private $aprobacion = 0;     
     
     /**
      * @var datetime $created
@@ -539,5 +546,28 @@ class Consulta
     public function getUsuario()
     {
         return $this->usuario;
+    }
+
+    /**
+     * Set aprobacion
+     *
+     * @param string $aprobacion
+     * @return Consulta
+     */
+    public function setAprobacion($aprobacion)
+    {
+        $this->aprobacion = $aprobacion;
+
+        return $this;
+    }
+
+    /**
+     * Get aprobacion
+     *
+     * @return string 
+     */
+    public function getAprobacion()
+    {
+        return $this->aprobacion;
     }
 }

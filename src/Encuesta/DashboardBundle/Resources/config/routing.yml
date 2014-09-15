@@ -41,7 +41,13 @@ dashboard_trivago_consulta_ejecutar_instacia:
     pattern:  /trivago/consulta/ejecutar/instancia/{id}
     defaults: { _controller: DashboardBundle:Trivago:ejecutar1 }
     requirements:
-        id: \d+         
+        id: \d+   
+        
+dashboard_trivago_consulta_aprobacion:
+    pattern:  /trivago/consulta/aprobacion/{id}
+    defaults: { _controller: DashboardBundle:Trivago:actualizarAprobacion }   
+    requirements:
+        id: \d+       
         
 dashboard_trivago_consulta_ver:
     pattern:  /trivago/consulta/ver/{id}

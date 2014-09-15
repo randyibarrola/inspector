@@ -28,3 +28,12 @@ $('.imagen').click(function(e){
 
 });
 
+
+
+$(document).ready(function() {
+    $.fn.editable.defaults.mode = 'inline';
+    
+    $('.porcentaje').editable({
+        showbuttons: false
+    });
+});

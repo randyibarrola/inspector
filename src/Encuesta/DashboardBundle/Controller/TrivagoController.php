@@ -276,7 +276,7 @@ class TrivagoController extends Controller
     }        
     
     public function deleteAction()
-    {
+    {        
         $request = $this->getRequest();
         $em = $this->getDoctrine()->getManager();        
 
@@ -288,6 +288,25 @@ class TrivagoController extends Controller
         $em->flush();
         
         return $this->redirect($this->generateUrl( 'dashboard_trivago_consultas'));
+    }    
+    
+    public function actualizarAprobacionAction()
+    {        
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
+
+        $obj = $em->getRepository('ModeloBundle:Consulta')->find($request->get('pk'));
+        if(!$obj)
+            $this->createNotFoundException('No existe la consulta que está intentando editar');
+        
+        $obj->setAprobacion($request->get('value'));
+        
+        $em->persist($obj);
+        $em->flush();
+        
+        return new Response();
+        
+        
     }     
     
     

@@ -568,14 +568,22 @@ class GestionBooking
             //$dealUrl = str_replace('departure', $fechaDep, $dealUrl );
             
             $dealUrl = str_replace('arrive', $fecha_entrada,$dealUrl );
-            $dealUrl = str_replace('departure', $fecha_salida, $dealUrl );           
+            $dealUrl = str_replace('departure', $fecha_salida, $dealUrl );   
+            
+            $link = 'http://www.trivago.es/?aDateRange[arr]=arrive&aDateRange[dep]=departure&iRoomType=7&iPathId=ipathItem&iGeoDistanceItem=geoItem&iViewType=0&bIsSeoPage=false&bIsSitemap=false&';
+            
+            $link = str_replace('arrive', $fecha_entrada,$link );
+            $link = str_replace('departure', $fecha_salida, $link ); 
+            $link = str_replace('geoItem', $geo, $link);
+            $link = str_replace('ipathItem', $ipath, $link);            
+            
             
             
             //if($fechaArr && $fechaDep) {
             if($fecha_entrada && $fecha_salida) {
                 $intervalos = array();
                 $cantidadBooking = 0;                 
-                $resultados = self::getComparativaTrivago($dealUrl, $geo);
+                $resultados = self::getComparativaTrivago($dealUrl, $geo, $link);
                
                 /*if($resultados['viable']){
                     $cantidadBooking++;
@@ -612,17 +620,17 @@ class GestionBooking
             return array();
     }
     
-    public static function getComparativaTrivago($url, $geo = null)
+    public static function getComparativaTrivago($url, $geo = null, $link)
     {
         $comparativa = "";    
         $iteracion = 1;
-        while( strlen($comparativa) < 130  ){
+        while( strlen($comparativa) < 130 ){
             $ch = self::LoginAtrapalo($url);
             $content = curl_exec($ch); 
             curl_close($ch);
             $contenido = json_decode($content);
             $comparativa = $contenido->$geo->sHtml;
-            
+           
         }
                 
         $busqueda = array();
@@ -662,7 +670,7 @@ class GestionBooking
         }
         
        
-        $busqueda['url'] = $url;
+        $busqueda['url'] = $link;
 
         return $busqueda;
     }
