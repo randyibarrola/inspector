@@ -69,6 +69,14 @@
                     <div class="span8 ">
                         <div class="control-group">
                             <label for="" class="control-label">
+                                {{ 'ID Adwords' | trans }}                               
+                            </label>
+                            <div class="controls">                               
+                                {{ form_widget(form.adwords_id, {'attr': {'class': 'm-wrap span11 validate-icon' | trans}} ) }}
+                            </div>
+                        </div>                        
+                        <div class="control-group">
+                            <label for="" class="control-label">
                                 {{ 'Nombre de la consulta' | trans }}                               
                             </label>
                             <div class="controls">                               

@@ -47,7 +47,13 @@ dashboard_trivago_consulta_aprobacion:
     pattern:  /trivago/consulta/aprobacion/{id}
     defaults: { _controller: DashboardBundle:Trivago:actualizarAprobacion }   
     requirements:
-        id: \d+       
+        id: \d+   
+        
+dashboard_trivago_consulta_tarifa:
+    pattern:  /trivago/consulta/tarifa/{id}
+    defaults: { _controller: DashboardBundle:Trivago:actualizarTarifa }   
+    requirements:
+        id: \d+          
         
 dashboard_trivago_consulta_ver:
     pattern:  /trivago/consulta/ver/{id}

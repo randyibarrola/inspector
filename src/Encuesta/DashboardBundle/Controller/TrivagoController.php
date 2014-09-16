@@ -84,12 +84,14 @@ class TrivagoController extends Controller
                 } 
                 
                 foreach($ids as $key => $id){
-                    $inspeccion = $id > 0 ? $em->getRepository('ModeloBundle:Inspeccion')->find($id) : new Inspeccion();
-                    $inspeccion->setFechaEjecucion(\DateTime::createFromFormat('d/m/y',$ejecucion[$key]));
-                    $inspeccion->setFechaInicio(\DateTime::createFromFormat('d/m/y', $inicio[$key]));
-                    $inspeccion->setFechaFin( \DateTime::createFromFormat('d/m/y', $fin[$key]) );
-                    $inspeccion->setConsulta($data);
-                    $em->persist($inspeccion);                    
+                    if( $ejecucion[$key] && $inicio[$key] && $fin[$key]) {
+                        $inspeccion = $id > 0 ? $em->getRepository('ModeloBundle:Inspeccion')->find($id) : new Inspeccion();
+                        $inspeccion->setFechaEjecucion(\DateTime::createFromFormat('d/m/y',$ejecucion[$key]));
+                        $inspeccion->setFechaInicio(\DateTime::createFromFormat('d/m/y', $inicio[$key]));
+                        $inspeccion->setFechaFin( \DateTime::createFromFormat('d/m/y', $fin[$key]) );
+                        $inspeccion->setConsulta($data);
+                        $em->persist($inspeccion);  
+                    }
                 }
                 
                 $em->flush();
@@ -212,7 +214,7 @@ class TrivagoController extends Controller
 
                 
                 $valorMenor = 0;
-                $estadoBooking = -1;
+                $estadoBooking = -2;
                 
                 if(isset($resultados['canales']) && count($resultados['canales']) >= 0) {  
                     
@@ -300,6 +302,25 @@ class TrivagoController extends Controller
             $this->createNotFoundException('No existe la consulta que está intentando editar');
         
         $obj->setAprobacion($request->get('value'));
+        
+        $em->persist($obj);
+        $em->flush();
+        
+        return new Response();
+        
+        
+    }
+    
+    public function actualizarTarifaAction()
+    {        
+        $request = $this->getRequest();
+        $em = $this->getDoctrine()->getManager();        
+
+        $obj = $em->getRepository('ModeloBundle:Consulta')->find($request->get('pk'));
+        if(!$obj)
+            $this->createNotFoundException('No existe la consulta que está intentando editar');
+        
+        $obj->setTarifa($request->get('value'));
         
         $em->persist($obj);
         $em->flush();

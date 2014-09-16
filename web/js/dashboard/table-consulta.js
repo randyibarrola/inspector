@@ -3,7 +3,7 @@ var TableConsulta= function() {
         $('#data-table-consulta').dataTable().columnFilter({
             sPlaceHolder: "head:after",
             aoColumns: [
-                {type: "text"}, {type: "text"}, {type: "text"}
+                {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}, {type: "text"}
             ]
         });
     };

@@ -117,7 +117,22 @@ class Consulta
      *
      * @ORM\Column(name="aprobacion", type="decimal", nullable=true, scale=2)
      */
-    private $aprobacion = 0;     
+    private $aprobacion = 0;  
+    
+    /**
+     * @var decimal
+     *
+     * @ORM\Column(name="tarifa", type="decimal", nullable=true, scale=2)
+     */
+    private $tarifa = 0;      
+    
+    
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adwords_id", type="string", length=100, nullable=true)
+     */
+    private $adwords_id;    
     
     /**
      * @var datetime $created
@@ -408,7 +423,10 @@ class Consulta
                     break;
                 case -1:
                     $cantidades['peor'] ++;
-                    break;                
+                    break;  
+                case -2:
+                    $total --;
+                    break; 
             }
         }
         
@@ -569,5 +587,51 @@ class Consulta
     public function getAprobacion()
     {
         return $this->aprobacion;
+    }
+
+    /**
+     * Set tarifa
+     *
+     * @param string $tarifa
+     * @return Consulta
+     */
+    public function setTarifa($tarifa)
+    {
+        $this->tarifa = $tarifa;
+
+        return $this;
+    }
+
+    /**
+     * Get tarifa
+     *
+     * @return string 
+     */
+    public function getTarifa()
+    {
+        return $this->tarifa;
+    }
+
+    /**
+     * Set adwords_id
+     *
+     * @param string $adwordsId
+     * @return Consulta
+     */
+    public function setAdwordsId($adwordsId)
+    {
+        $this->adwords_id = $adwordsId;
+
+        return $this;
+    }
+
+    /**
+     * Get adwords_id
+     *
+     * @return string 
+     */
+    public function getAdwordsId()
+    {
+        return $this->adwords_id;
     }
 }

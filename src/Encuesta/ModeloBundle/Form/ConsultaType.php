@@ -19,7 +19,16 @@ class ConsultaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {     
         
-        $builder            
+        $builder   
+            ->add('adwords_id', 'text', array(
+                'label' => 'ID Adwords',
+                'attr' => array(
+                    'class' => '',
+                    'placeholder' => 'ID Adwords',
+                    'size'=>40
+                ),
+                'required' => false               
+            ))                 
             ->add('nombre', 'text', array(
                 'label' => 'Nombre',
                 'attr' => array(

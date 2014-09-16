@@ -77,13 +77,15 @@
                     <th class="hidden-phone">{{ 'Nombre' | trans }}</th>
                     <th class="hidden-phone">{{ 'Hotel' | trans }}</th>
                     <th class="hidden-phone">{{ 'Porcentaje' | trans }}</th>
+                    <th colspan="2" class="hidden-phone">{{ 'Aprobación' | trans }}</th>                    
                     <th class="table-actions-cell"></th>
                 </tr>
                 <tr class="hidden-phone hidden-print">
                     <th>{{ 'Nombre' | trans }}</th>
                     <th>{{ 'Hotel' | trans }}</th>
                     <th>{{ 'Porcentaje' | trans }}</th>
-                    <th>{{ 'Porcentaje Aprobación' | trans }}</th>
+                    <th>{{ 'Porcentaje' | trans }}</th>
+                    <th>{{ 'Tarifa €' | trans }}</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -92,8 +94,9 @@
                     <tr class="table-row">
                         <td>{{ obj.nombre }}</td>
                         <td class="hidden-phone">{{ obj.hotel }}</td>
-                        <td><span class="label label-success">{{ obj.porcentajeMenorTexto | raw }}</span><span class="label label-primary">{{ obj.porcentajeIgualTexto | raw }}</span><span class="label label-warning">{{ obj.porcentajeMayorTexto | raw }}</span></td>
+                        <td><span class="label label-success bold">{{ obj.porcentajeMenorTexto | raw }}</span><span class="label label-primary bold">{{ obj.porcentajeIgualTexto | raw }}</span><span class="label label-warning bold">{{ obj.porcentajeMayorTexto | raw }}</span></td>
                         <td><a href="#" class="porcentaje" data-type="number" data-pk="{{ obj.id }}" data-url="{{ path('dashboard_trivago_consulta_aprobacion', {'id':obj.id}) }}" data-title="Porcentaje de Aprobación">{{ obj.aprobacion }}</a></td>
+                        <td><a href="#" class="porcentaje" data-type="number" data-pk="{{ obj.id }}" data-url="{{ path('dashboard_trivago_consulta_tarifa', {'id':obj.id}) }}" data-title="Tarifa de Aprobación">{{ obj.tarifa }}</a></td>                        
                         <td>
                             <div class="hidden-print">
                                 <a class="btn mini blue" data-nombre="" data-src=""  href="{{ path('dashboard_trivago_consulta_ver', { 'id': obj.id }) }}" title="{{ 'Ver Detalles de la Consulta' | trans }}"><i class="icon-search icon-white"></i></a>

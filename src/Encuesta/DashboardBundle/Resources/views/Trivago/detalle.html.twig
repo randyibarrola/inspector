@@ -55,7 +55,7 @@
         <div class="portlet-body form">
             <!-- BEGIN FORM-->
             <div class="form-horizontal form-view">
-                <h3 class="hidden-phone"> {{ consulta.hotel }} <span class="label label-success">{{ consulta.porcentajeMenorTexto | raw }}</span><span class="label label-primary">{{ consulta.porcentajeIgualTexto | raw }}</span><span class="label label-warning">{{ consulta.porcentajeMayorTexto | raw }}</span></h3>
+                <h3 class="hidden-phone"> {{ consulta.hotel }} <span class="label label-success bold">{{ consulta.porcentajeMenorTexto | raw }}</span><span class="label label-primary bold">{{ consulta.porcentajeIgualTexto | raw }}</span><span class="label label-warning bold">{{ consulta.porcentajeMayorTexto | raw }}</span></h3>
                 <!--BEGIN TABS-->
                 <div class="tabbable tabbable-custom">                    
                     {% for inspeccion in consulta.inspecciones %}
@@ -65,7 +65,7 @@
                             <li class="active"><a href="#tib" data-toggle="tab"><i class="icon-info-sign"></i> <span class="hidden-480">{{ inspeccion.fechaInicio | date('d/m/Y') ~ ' - ' ~  inspeccion.fechaFin | date('d/m/Y')}}</span></a></li>                            
                         </ul>
                         <div class="tab-content">    
-                            {% if inspeccion.ejecutada %}
+                            {% if inspeccion.ejecutada and inspeccion.estadoBooking != -2%}
                                 <div class="tab-pane active" id="tib">
                                     <h4 class="form-section visible-phone hidden-tablet hidden-desktop">{{ 'Información básica' | trans }}</h4>
                                     <div class="row-fluid">
@@ -116,8 +116,8 @@
                                     </div>
                                 </div>
                                 
-                            {% else  %}
-                                <div>{{ 'Esta consulta aun no se ha ejecutado' | trans }}</div>
+                            {% else  %}                                
+                                <div>{{ inspeccion.estadoBooking == - 2 ? 'No hay resultados de booking.com para esta consulta' : 'Esta consulta aun no se ha ejecutado'}}</div>
                             {% endif %}
                         </div>
                     {% endfor %}
