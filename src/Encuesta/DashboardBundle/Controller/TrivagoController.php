@@ -205,8 +205,6 @@ class TrivagoController extends Controller
         $ahora = new \DateTime('now');
         $promedios = array('menor'=>array(),'igual'=>array(), 'mayor'=>array() );
         
-        GestionBooking::getResultadosTrivago($obj->getUrl(), $ahora->format('Y-m-d'), $ahora->format('Y-m-d'));
-        
         foreach($inspecciones as $inspeccion){
             if($inspeccion->getFechaInicio() > $ahora){
                 

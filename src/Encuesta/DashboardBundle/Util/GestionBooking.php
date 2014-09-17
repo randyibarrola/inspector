@@ -33,6 +33,7 @@ class GestionBooking
         //$password = base64_decode($producto->getPasswordPortales());
         //$username = 'escaleralavapies';
         //$password = 'STRlavapies';
+        $cookies = getcwd() . "/cookies.txt";
         $loginUrl = $url;
         $http_headers = array(                    
                     'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:6.0.2) Gecko/20100101 Firefox/30.0.2',
@@ -51,11 +52,24 @@ class GestionBooking
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $http_headers);
-//        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows; U; MSIE 9.0; WIndows NT 9.0; en-US)'); 
+        curl_setopt($ch, CURLOPT_COOKIESESSION, true );
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_exec($ch);
 
-        //curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-
-        //curl_exec($ch);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $loginUrl);
+        //curl_setopt($ch, CURLOPT_POST, 1);
+        //curl_setopt($ch, CURLOPT_POSTFIELDS, 'user='.$username.'&pass='.$password);
+        //curl_setopt($ch, CURLOPT_COOKIEJAR, 'cookie.txt');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $http_headers);        
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookies);
+        //curl_setopt($ch, CURLOPT_COOKIEJAR, $cookies);
+        //curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        
         
         return $ch;
     }
@@ -583,37 +597,8 @@ class GestionBooking
             if($fecha_entrada && $fecha_salida) {
                 $intervalos = array();
                 $cantidadBooking = 0;                 
-                $resultados = self::getComparativaTrivago($dealUrl, $geo, $link);
-               
-                /*if($resultados['viable']){
-                    $cantidadBooking++;
-                }
-                $intervalos['hotel'] = $resultados['hotel'];
-                $intervalos[1] = array( 'fecha_inicio' => $fechaArr , 'fecha_fin' => $fechaDep , 'resultados' => $resultados, 'url'=>$url);            
+                $resultados = self::getComparativaTrivago($dealUrl, $geo, $link );
 
-                for($i = 2; $i < 7; $i++){                    
-                    $date = new \DateTime($fechaDep);
-                    $date->add(new \DateInterval('P1D'));
-                    //tranformando url
-                    $url = str_replace($fechaArr, $date->format('Y-m-d'), $url);
-                    $fechaArr = $date->format('Y-m-d');
-
-                    $date = new \DateTime($fechaDep);
-                    $date->add(new \DateInterval('P7D')); 
-                    //tranformando url
-                    $url = str_replace($fechaDep, $date->format('Y-m-d') , $url);
-                    $fechaDep = $date->format('Y-m-d');
-                    
-                    $resultados = self::getComparativaTrivago($url);
-                    if($resultados['viable']){
-                        $cantidadBooking++;
-                    }
-                    $intervalos[$i] = array('fecha_inicio' => $fechaArr, 'fecha_fin' => $fechaDep, 'resultados' => $resultados, 'url'=>$url );
-                }     
-                
-                $intervalos['porcentaje'] = number_format( ( $cantidadBooking * 100 ) / 12, 2 );*/
-                
-                //return $intervalos;
                 return $resultados;
             }
             
@@ -621,26 +606,31 @@ class GestionBooking
     }
     
     public static function getComparativaTrivago($url, $geo = null, $link)
-    {
-        $comparativa = "";    
-        $iteracion = 1;
-        while( strlen($comparativa) < 130 ){
-            $ch = self::LoginAtrapalo($url);
-            $content = curl_exec($ch); 
-            curl_close($ch);
-            $contenido = json_decode($content);
-            $comparativa = $contenido->$geo->sHtml;
-           
-        }
-                
+    {            
         $busqueda = array();
         $busqueda['mejor'] = array();
         $busqueda['canales'] = array();        
         $busqueda['precios'] = array();
         
-        //$html = self::str_get_dom($content);   
-        //echo $contenido->hotels[0]->html;die;
-        $html = SimpleHtmlDom::my_file_get_html($comparativa);  
+        //self::MetodoTrivagoDeal($url, $busqueda);
+        $busqueda = self::MetodoTrivagoNormal($link, $busqueda);      
+        $busqueda['url'] = $link;
+
+        return $busqueda;
+    }
+    
+    public static function MetodoTrivagoDeal($url, $busqueda){
+        $iteracion = 1;
+       while( strlen($comparativa) < 130 ){
+            $ch = self::LoginAtrapalo($url);
+            $content = curl_exec($ch); 
+            curl_close($ch);
+            $contenido = json_decode($content);            
+            $comparativa = $contenido->$geo->sHtml;
+           
+        }
+        
+        $html = SimpleHtmlDom::my_file_get_html($comparativa); 
         
         $canales = $html->find('div[class=deals_logo_wrapper] img'); 
         $precios = $html->find('strong[class=price price_info]');
@@ -667,13 +657,83 @@ class GestionBooking
                 $busqueda['precios'][] = $p ; 
             }
             
-        }
+        }        
         
-       
-        $busqueda['url'] = $link;
-
         return $busqueda;
     }
+    
+    public static function MetodoTrivagoNormal($url, $busqueda){
+        
+        $iteracion = 1;
+        $comparativa = ""; 
+        $booking = false;
+        while(!$booking && $iteracion < 3){
+            $busqueda = array();
+            $busqueda['mejor'] = array();
+            $busqueda['canales'] = array();        
+            $busqueda['precios'] = array();
+            
+            $ch = self::LoginAtrapalo($url);
+            $content = curl_exec($ch); 
+            curl_close($ch);
+            $contenido = json_decode($content);
+
+            foreach($contenido->hotels as $key => $hotel){
+                if($key == 0) {
+                    $comparativa = $hotel->html;
+                }
+            }
+
+            $html = SimpleHtmlDom::my_file_get_html($comparativa);  
+
+            $mejorNombre = $html->find('div[class=item_bestprice] strong[class=partner_name]',0); 
+            $mejorPrecio = $html->find('div[class=item_bestprice] strong[class=price]',0); 
+
+            if($mejorNombre && $mejorPrecio){
+                $busqueda['canales'][] = trim($mejorNombre->plaintext);
+                $busqueda['precios'][] = trim($mejorPrecio->plaintext);
+            } else {
+                $mejorNombre = $html->find('div[class=item_bestprice] strong[class=partner_name]',0); 
+                $mejorPrecio = $html->find('div[class=item_bestprice] strong[class=price_min]',0);  
+                if($mejorNombre && $mejorPrecio){
+                    $busqueda['canales'][] = trim($mejorNombre->plaintext);
+                    $busqueda['precios'][] = trim($mejorPrecio->plaintext);
+                }
+            }
+
+            $canales = $html->find('ul[class=hotel_prices] li[class=single_price]'); 
+            foreach($canales as $canal){
+                $nombre = $canal->find('em', 0);
+                $busqueda['canales'][] = trim($nombre->plaintext);
+                $precio = $canal->find('strong', 0);
+                $busqueda['precios'][] = trim($precio->plaintext);
+            }
+            
+            foreach($busqueda['canales'] as $canal){
+                if($canal == "Booking.com")
+                    $booking = true;
+            }
+                
+            $iteracion ++;
+            
+        }
+
+        foreach($busqueda['precios'] as $key => $precio){        
+
+                $p = $precio;
+                $p = str_replace(' â‚¬', '', $p); 
+                $p = str_replace('â‚¬', '', $p);
+                $p = str_replace(' €', '', $p); 
+                $p = str_replace('€', '', $p); 
+                $p = str_replace('&nbsp;', 0, $p);
+                $busqueda['precios'][$key] = $p ; 
+
+        }         
+        
+        return $busqueda;
+        
+    }   
+    
     
     
 }
