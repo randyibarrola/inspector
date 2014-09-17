@@ -667,7 +667,9 @@ class GestionBooking
         $iteracion = 1;
         $comparativa = ""; 
         $booking = false;
-        while(!$booking && $iteracion < 3){
+		$cantidad_hotels = 0;
+		
+        while($cantidad_hotels <= 1){
             $busqueda = array();
             $busqueda['mejor'] = array();
             $busqueda['canales'] = array();        
@@ -682,41 +684,43 @@ class GestionBooking
                 if($key == 0) {
                     $comparativa = $hotel->html;
                 }
+				$cantidad_hotels ++;
             }
+		}
 
-            $html = SimpleHtmlDom::my_file_get_html($comparativa);  
+		$html = SimpleHtmlDom::my_file_get_html($comparativa);  
 
-            $mejorNombre = $html->find('div[class=item_bestprice] strong[class=partner_name]',0); 
-            $mejorPrecio = $html->find('div[class=item_bestprice] strong[class=price]',0); 
+		$mejorNombre = $html->find('div[class=item_bestprice] strong[class=partner_name]',0); 
+		$mejorPrecio = $html->find('div[class=item_bestprice] strong[class=price]',0); 
 
-            if($mejorNombre && $mejorPrecio){
-                $busqueda['canales'][] = trim($mejorNombre->plaintext);
-                $busqueda['precios'][] = trim($mejorPrecio->plaintext);
-            } else {
-                $mejorNombre = $html->find('div[class=item_bestprice] strong[class=partner_name]',0); 
-                $mejorPrecio = $html->find('div[class=item_bestprice] strong[class=price_min]',0);  
-                if($mejorNombre && $mejorPrecio){
-                    $busqueda['canales'][] = trim($mejorNombre->plaintext);
-                    $busqueda['precios'][] = trim($mejorPrecio->plaintext);
-                }
-            }
+		if($mejorNombre && $mejorPrecio){
+			$busqueda['canales'][] = trim($mejorNombre->plaintext);
+			$busqueda['precios'][] = trim($mejorPrecio->plaintext);
+		} else {
+			$mejorNombre = $html->find('div[class=item_bestprice] strong[class=partner_name]',0); 
+			$mejorPrecio = $html->find('div[class=item_bestprice] strong[class=price_min]',0);  
+			if($mejorNombre && $mejorPrecio){
+				$busqueda['canales'][] = trim($mejorNombre->plaintext);
+				$busqueda['precios'][] = trim($mejorPrecio->plaintext);
+			}
+		}
 
-            $canales = $html->find('ul[class=hotel_prices] li[class=single_price]'); 
-            foreach($canales as $canal){
-                $nombre = $canal->find('em', 0);
-                $busqueda['canales'][] = trim($nombre->plaintext);
-                $precio = $canal->find('strong', 0);
-                $busqueda['precios'][] = trim($precio->plaintext);
-            }
-            
-            foreach($busqueda['canales'] as $canal){
-                if($canal == "Booking.com")
-                    $booking = true;
-            }
+		$canales = $html->find('ul[class=hotel_prices] li[class=single_price]'); 
+		foreach($canales as $canal){
+			$nombre = $canal->find('em', 0);
+			$busqueda['canales'][] = trim($nombre->plaintext);
+			$precio = $canal->find('strong', 0);
+			$busqueda['precios'][] = trim($precio->plaintext);
+		}
+		
+		foreach($busqueda['canales'] as $canal){
+			if($canal == "Booking.com")
+				$booking = true;
+		}
                 
-            $iteracion ++;
+            //$iteracion ++;
             
-        }
+        
 
         foreach($busqueda['precios'] as $key => $precio){        
 
