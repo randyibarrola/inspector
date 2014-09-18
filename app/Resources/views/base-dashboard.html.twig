@@ -33,8 +33,9 @@
     {% block level_stylesheet %}{% endblock %}
     <!-- END PAGE LEVEL STYLES -->
     <link rel="shortcut icon" href="favicon.ico" />
+    {% block trivago_script %}{% endblock %}
   </head>
-  <body class="{% block body_class %}page-header-fixed page-sidebar-fixed page-sidebar-closed{% endblock %}">
+  <body class="{% block body_class %}page-header-fixed page-sidebar-fixed page-sidebar-closed{% endblock %}">    
     {% block body %}{% endblock %}
 
     <!-- BEGIN CORE PLUGINS -->

@@ -67,6 +67,12 @@ class TrivagoController extends Controller
 
                 $data = $form->getData();
                 $data->setUsuario($this->getUser());
+                $numero = $data->getNumeroEjecucion();      
+                if(!$data->getId()){
+                   $data->setNumeroEjecucion(0); 
+                } else {
+                   $data->setNumeroEjecucion($numero++);  
+                }
                     
                 $em->persist($data);
                 
@@ -209,7 +215,6 @@ class TrivagoController extends Controller
             if($inspeccion->getFechaInicio() > $ahora){
                 
                 $resultados = GestionBooking::getResultadosTrivago($obj->getUrl(), $inspeccion->getFechaInicio()->format('Y-m-d'), $inspeccion->getFechaFin()->format('Y-m-d'));
-
                 
                 $valorMenor = 0;
                 $estadoBooking = -2;
@@ -260,7 +265,8 @@ class TrivagoController extends Controller
             }
         }
         
-        
+        $numero = $obj->getNumeroEjecucion();
+        $obj->setNumeroEjecucion(++$numero);
         
         $obj->setPorcentajesDesdeEstados($estados);
         $obj->setPromediosDesdePrecios($promedios);

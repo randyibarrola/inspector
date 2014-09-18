@@ -149,6 +149,13 @@ class Consulta
      * @ORM\Column(type="datetime")
      */
     private $updated;    
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="numero_ejecucion", type="integer", nullable=true)
+     */
+    private $numero_ejecucion = 0;        
 
     
     /**
@@ -633,5 +640,28 @@ class Consulta
     public function getAdwordsId()
     {
         return $this->adwords_id;
+    }
+
+    /**
+     * Set numero_ejecucion
+     *
+     * @param integer $numeroEjecucion
+     * @return Consulta
+     */
+    public function setNumeroEjecucion($numeroEjecucion)
+    {
+        $this->numero_ejecucion = $numeroEjecucion;
+
+        return $this;
+    }
+
+    /**
+     * Get numero_ejecucion
+     *
+     * @return integer 
+     */
+    public function getNumeroEjecucion()
+    {
+        return $this->numero_ejecucion;
     }
 }

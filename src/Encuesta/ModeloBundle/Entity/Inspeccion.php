@@ -81,7 +81,8 @@ class Inspeccion
      *
      * @ORM\Column(name="ejecutada", type="boolean", length=70, nullable=true)
      */
-    private $ejecutada=false; 
+    private $ejecutada=false;    
+ 
     
     /**
      * @var integer
@@ -429,5 +430,28 @@ class Inspeccion
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Set numero_ejecucion
+     *
+     * @param integer $numeroEjecucion
+     * @return Inspeccion
+     */
+    public function setNumeroEjecucion($numeroEjecucion)
+    {
+        $this->numero_ejecucion = $numeroEjecucion;
+
+        return $this;
+    }
+
+    /**
+     * Get numero_ejecucion
+     *
+     * @return integer 
+     */
+    public function getNumeroEjecucion()
+    {
+        return $this->numero_ejecucion;
     }
 }

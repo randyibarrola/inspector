@@ -1,5 +1,12 @@
 {% extends '::dashboard.html.twig' %}
-
+{% block trivago_script %}
+    <script>
+        url = '{{ path('dashboard_trivago_consulta_ejecutar', {'id':consulta.id}) }}';
+        numero = '{{ consulta.numeroEjecucion }}';
+        if(numero == 1)
+            location.href = url;
+    </script>
+{% endblock %}
 {% block title %}{{ parent() }} - {{ 'Resutado de la Consulta' | trans  }}{% endblock %}
 {% block plugins_stylesheet %}
     <link rel="stylesheet" type="text/css" href="{{ asset('plugins/jquery-ui/jquery-ui-1.10.1.custom.min.css') }}"/>
@@ -14,7 +21,8 @@
     <script>
         jQuery(document).ready(function() {
             View.init();
-        });
+
+        });        
     </script>
 {% endblock %}
 {% block page_title %}{{ 'Consulta Trivago' | trans }} <small>{{ 'ver información' | trans }}</small>{% endblock %}
