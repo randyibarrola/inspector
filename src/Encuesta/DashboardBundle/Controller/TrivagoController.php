@@ -232,7 +232,7 @@ class TrivagoController extends Controller
                             $promedios['igual'][] = $valorMenor;
                             if($resultados['canales'][$i] == 'Booking.com'){
                                $estadoBooking = 1; 
-                               $promedios['menor'][] = $valorMenor;
+                               $promedios['menor'][] = isset($resultados['precios'][1]) ? $resultados['precios'][1] - $valorMenor : $valorMenor;
                             }
                         } else {
                             if($resultados['canales'][$i] == 'Booking.com'){
@@ -240,7 +240,7 @@ class TrivagoController extends Controller
                                    $estadoBooking = 0;                                   
                                } else {
                                    $estadoBooking = -1;   
-                                   $promedios['mayor'][]=$resultados['precios'][$i];
+                                   $promedios['mayor'][]= $resultados['precios'][$i] - $resultados['precios'][0];
                                }
                                $estadoBooking = $resultados['precios'][$i] == $valorMenor ? 0 : -1;  
                             }

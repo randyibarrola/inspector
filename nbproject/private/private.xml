@@ -12,12 +12,18 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Resources/config/routing.yml</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Form/CanalType.php</file>
             <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Entity/Consulta.php</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Form/ConsultaType.php</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Controller/DefaultController.php</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/web/js/dashboard/table-canal.js</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Resources/views/Canal/detalle.html.twig</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Entity/Canal.php</file>
             <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Controller/TrivagoController.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Entity/InspeccionResultado.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/ModeloBundle/Entity/Inspeccion.php</file>
-            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Resources/views/Trivago/detalle.html.twig</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/web/js/dashboard/table-consulta.js</file>
             <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Controller/UserController.php</file>
+            <file>file:/C:/Users/Jose/Documents/inspector/src/Encuesta/DashboardBundle/Controller/CanalController.php</file>
         </group>
     </open-files>
 </project-private>

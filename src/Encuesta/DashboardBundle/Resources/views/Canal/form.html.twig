@@ -1,0 +1,159 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ (obj.id is not null ? 'Editar consulta' : 'Añadir consulta') | trans ~ (obj.id is not null ? ' ' ~ obj.nombre : '') }}{% endblock %}
+{% block plugins_stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/select2_metro.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/bootstrap-datepicker/css/datepicker.css') }}" />
+{% endblock %}
+{% block plugins_javascript %}
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/lib/jquery.form.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.es.js') }}"></script>
+    {% if app.request.locale != 'en' %}
+        <script type="text/javascript" src="{{ asset('plugins/jquery-validation/localization/messages_' ~ app.request.locale ~ '.js') }}"></script>
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/select2/select2.min.js') }}"></script>
+{% endblock %}
+{% block level_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/dashboard/form.js') }}"></script>     
+    <script type="text/javascript" src="{{ asset('js/dashboard/consulta.js') }}"></script>  
+{% endblock %}
+{% block init_javascript %}
+    {{ parent() }}    
+    <script>
+       
+    </script>
+{% endblock %}
+{% block page_title %}{{ 'Consultas' | trans }} <small>{{ obj.id is not null ? 'editar' | trans : 'añadir nuevo' | trans }}</small>{% endblock %}
+{% block breadcrumb_list %}
+    {{ parent() }}
+    <li>
+        <i class="icon-sitemap"></i>
+        <a href="{{ path('dashboard_trivago_consultas') }}">{{ 'Consultas' | trans }}</a>
+        <span class="icon-angle-right"></span>
+    </li>
+    <li>
+        <i class="{{ obj.id is not null ? 'icon-edit' | trans : 'icon-plus' | trans }}"></i>
+        {{ obj.id is not null ? 'Editar' | trans : 'Añadir nuevo' | trans }}
+    </li>
+{% endblock %}
+
+{% block level_content %}
+    <div class="portlet box purple">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-sitemap"></i>{{ 'Formulario de consulta' | trans }}</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+            <div class="actions">
+                <a class="btn purple block-portlet" href="{{ path('dashboard_trivago_consultas') }}"><i class="icon-list"></i> <span class="hidden-480">{{ 'Regresar al listado' | trans }}</span></a>
+                {% if obj.id is not null %}
+                    <a class="btn green block-portlet" href="{{ path('dashboard_trivago_consulta_editar', { 'id': obj.id }) }}"><i class="icon-file"></i> <span class="hidden-480">{{ 'Ver' | trans }}</span></a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form class="horizontal-form form-validate ajax-form {% if obj.id is null %}form_new{% endif %}" action="{{ obj.id is not null ? path('dashboard_trivago_consulta_editar', { 'id': obj.id }) : path('dashboard_trivago_consulta_nuevo') }}" method="post" {{ form_enctype(form) }}>
+                <div class="span6 pull-right">
+                    <div class="alert-validation alert hide">
+                        <div class="alert-message">{{ 'Existen datos incorrectos en el formulario' | trans }}</div>
+                    </div>
+                </div>
+                <h3 class="form-section">{{ obj.id is null ? 'Añadir nueva consulta' | trans : 'Editar consulta' | trans }}</h3>
+                <div class="row-fluid">
+                    <div class="span8 ">
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'ID Adwords' | trans }}                               
+                            </label>
+                            <div class="controls">                               
+                                {{ form_widget(form.adwords_id, {'attr': {'class': 'm-wrap span11 validate-icon' | trans}} ) }}
+                            </div>
+                        </div>                        
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Nombre de la consulta' | trans }}                               
+                            </label>
+                            <div class="controls">                               
+                                {{ form_widget(form.nombre, {'attr': {'class': 'm-wrap span11 validate-icon' | trans}} ) }}                                  
+                               
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Nombre del Hotel' | trans }}                               
+                            </label>
+                            <div class="controls">                               
+                                {{ form_widget(form.hotel, {'attr': {'class': 'm-wrap span11 validate-icon'}}) }}                                   
+                               
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Url' | trans }}                               
+                            </label>
+                            <div class="controls">                               
+                                {{ form_widget(form.url, {'attr': {'class': 'm-wrap span11  validate-icon'}}) }}                                   
+                               
+                            </div>
+                        </div>                            
+                        
+                    </div>
+                    <!--/span-->
+                    <div class="span8 ">
+                        <div class="control-group">
+                            <label for="" class="control-label">
+                                {{ 'Consultas de inspección a ejecutar' | trans }}
+                            </label>                            
+                        </div>
+                    </div>
+                    {% if obj.inspecciones | length == 0 %}
+                        <div class="span8 inspecciones">
+                            <div class="control-group">
+                                <input class="m-wrap span11 validate-icon ejecucion" style="width: 28%!important;" name="ejecucion[]" placeholder="{{ 'Fecha de Ejecución' | trans }}" /> 
+                                    <input type="hidden" name="ids[]" value="0"> 
+                                    <div class="input-daterange input-group span8" id="datepicker" style="float:right">
+                                        <input style="width: 37%!important;" type="text" class="m-wrap span11 validate-icon input-sm form-control" name="inicio[]" placeholder="{{ 'Fecha Inicial' | trans }}" />
+                                        <span class="input-group-addon">a</span>
+                                        <input style="width: 37%!important;" type="text" class="m-wrap span11 validate-icon input-sm form-control" name="fin[]" placeholder="{{ 'Fecha Final' | trans }}" />    
+                                        <a href="#" class="eliminar" title="Eliminar" style="cursor:pointer"><i class="icon-remove"></i></a>
+                                    </div>
+                            </div>                        
+                        </div>
+                    {% else %}
+                        {% for inspeccion in obj.inspecciones %}
+                        <div class="span8 inspecciones">
+                            <div class="control-group">
+                                <input class="m-wrap span11 validate-icon ejecucion" style="width: 28%!important;" name="ejecucion[]" placeholder="{{ 'Fecha de Ejecución' | trans }}" value="{{ inspeccion.fechaEjecucion | date('d/m/y') }}" />
+                                <input type="hidden" name="ids[]" value="{{ inspeccion.id }}"> 
+                                    <div class="input-daterange input-group span8" id="datepicker" style="float:right">
+                                        <input style="width: 37%!important;" type="text" class="m-wrap span11 validate-icon input-sm form-control" name="inicio[]" value="{{ inspeccion.fechaInicio | date('d/m/y') }}" />
+                                        <span class="input-group-addon">a</span>
+                                        <input style="width: 37%!important;" type="text" class="m-wrap span11 validate-icon input-sm form-control" name="fin[]" value="{{ inspeccion.fechaFin | date('d/m/y') }}"  />    
+                                        <a href="#" class="eliminar" title="Eliminar" style="cursor:pointer"><i class="icon-remove"></i></a>
+                                    </div>
+                            </div>                        
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="span8 ">
+                        <div class="control-group">
+                            <a class="btn purple agregar"><i class="icon-plus"></i> {{ 'Agregar consulta de inspección' | trans }}</a>
+                        </div>
+                    </div>                    
+                </div>
+                <!--/row-->
+                {{ form_rest(form) }}
+                <div class="form-actions">
+                    <button class="btn purple" type="submit"><i class="icon-ok"></i> {{ 'Guardar' | trans }}</button>
+                    <a class="btn block-portlet" href="{{ path('dashboard_trivago_consultas') }}">{{ 'Cancelar' | trans }}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

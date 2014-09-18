@@ -462,12 +462,14 @@ class Consulta
     
     
     public function getPorcentajeMenorTexto(){
-        $valor = $this->promedio_menor > 0 ? ($this->promedio_igual - $this->promedio_menor) : 0;
+        //$valor = $this->promedio_menor > 0 ? ($this->promedio_igual - $this->promedio_menor) : 0;
+        $valor = $this->promedio_menor ;
         return '-'.number_format($this->porcentaje_menor, 2, ',', '.').'% ( € '.number_format($valor, 2, ',', '.').' )';
     }
     
     public function getPorcentajeMayorTexto(){
-        $valor = $this->promedio_mayor > 0 ? ($this->promedio_mayor - $this->promedio_igual) : 0;
+        //$valor = $this->promedio_mayor > 0 ? ($this->promedio_mayor - $this->promedio_igual) : 0;
+        $valor = $this->promedio_mayor;
         return '+'. number_format($this->porcentaje_mayor, 2, ',', '.').'% ( € '. number_format($valor, 2, ',', '.') .' )';
     }
     
