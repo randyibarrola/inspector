@@ -39,8 +39,8 @@ security:
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }        
-        - { path: ^/carga/turnos, roles: [ROLE_ADMIN] }        
+        - { path: ^/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }       
+        - { path: ^/canal/*, roles: [ROLE_ADMIN] }      
         - { path: ^/usuario, roles: [ROLE_ADMIN] }        
         - { path: ^/*, roles: [ROLE_ADMIN, ROLE_USER] }
        

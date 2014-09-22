@@ -1,0 +1,90 @@
+{% extends '::dashboard.html.twig' %}
+
+{% block title %}{{ parent() }} - {{ 'Mis canales' }}{% endblock %}
+{% block plugins_stylesheet %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ asset('plugins/select2/select2_metro.css') }}" />
+{% endblock %}
+{% block plugins_javascript %}
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/jquery.validate.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/dist/additional-methods.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/jquery-validation/lib/jquery.form.js') }}"></script>
+    {% if app.request.locale != 'en' %}
+        <script type="text/javascript" src="{{ asset('plugins/jquery-validation/localization/messages_' ~ app.request.locale ~ '.js') }}"></script>
+    {% endif %}
+    <script type="text/javascript" src="{{ asset('plugins/bootstrap-fileupload/bootstrap-fileupload.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('plugins/select2/select2.min.js') }}"></script>
+{% endblock %}
+{% block level_javascript %}
+    {{ parent() }}
+    <script type="text/javascript" src="{{ asset('js/dashboard/form.js') }}"></script>
+{% endblock %}
+{% block init_javascript %}
+    {{ parent() }}
+    <script>
+        jQuery(document).ready(function() {
+            Form.init();
+        });
+    </script>
+{% endblock %}
+{% block page_title %}{{ 'Definir Canales' | trans }} {% endblock %}
+{% block breadcrumb_list %}
+    {{ parent() }}
+    <li>
+        <i class="icon-sitemap"></i>
+        <a href="{{ path('dashboard_usuario_canal') }}">{{ 'Canales' | trans }}</a>
+        <span class="icon-angle-right"></span>
+    </li>
+    <li>
+        <i class="icon-edit"></i>
+        {{ 'Definir' }}
+    </li>
+{% endblock %}
+
+{% block level_content %}
+    <div class="portlet box purple">
+        <div class="portlet-title">
+            <div class="caption"><i class="icon-sitemap"></i>{{ 'Formulario de definición de canales' | trans }}</div>
+            <div class="tools">
+                <a href="javascript:;" class="collapse"></a>
+            </div>
+            <div class="actions">
+                <a class="btn purple block-portlet" href="{{ path('dashboard_usuario_canal') }}"><i class="icon-list"></i> <span class="hidden-480">{{ 'Regresar al listado' | trans }}</span></a>
+          
+            </div>
+        </div>
+        <div class="portlet-body form">
+            <form class="horizontal-form form-validate ajax-form " action="{{ path('dashboard_usuario_canal_editar') }}" method="post" >
+                <div class="span6 pull-right">
+                    <div class="alert-validation alert hide">
+                        <div class="alert-message">{{ 'Existen datos incorrectos en el formulario' | trans }}</div>
+                    </div>
+                </div>
+                <h3 class="form-section">{{  'Canales válidos para mis consultas' | trans }}</h3>
+                <div class="row-fluid">
+                    <div class="span6 ">
+                        {% for canal in canales %}
+                        <div class="control-group">
+                            <div class="controls">                               
+                                <input type="checkbox" name="canales[]" value="{{ canal.id }}" {% if app.user.esMicanal(canal.id) %} checked="checked" {% endif %} >
+                                <span for="" class="">
+                                    {{ canal.nombre }}                               
+                                </span>
+                            </div>
+                        </div>
+                        {% endfor %}               
+                        
+                    </div>  
+                    
+                  
+                </div>
+                <!--/row-->
+                
+                <div class="form-actions">
+                    <button class="btn purple" type="submit"><i class="icon-ok"></i> {{ 'Guardar' | trans }}</button>
+                    <a class="btn block-portlet" href="{{ path('dashboard_usuario') }}">{{ 'Cancelar' | trans }}</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

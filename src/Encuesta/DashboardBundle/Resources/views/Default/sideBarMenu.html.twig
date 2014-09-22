@@ -6,7 +6,7 @@
         <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
     </li>
     <li class="start {% if route_match in ['dashboard_trivago_consultas'] %}active{% endif %}">
-        <a href="{{ path('dashboard_trivago_consultas') }}" target="">
+        <a href="{{ path('dashboard_trivago_consultas') }}" target="" title="{{ 'Consultas' | trans }}">
             <i class="icon-upload">
             </i>
             <span class="title">
@@ -16,7 +16,33 @@
                 <span class="selected"></span>
             {% endif %}
         </a>
-    </li>    
+    </li>   
+    <li class="start {% if route_match in ['dashboard_usuario_canal'] %}active{% endif %}">
+        <a href="{{ path('dashboard_usuario_canal') }}" target="" title="{{ 'Mis Canales' | trans }}">
+            <i class="icon-search">
+            </i>
+            <span class="title">
+                {{ 'Mis Canales' | trans }}
+            </span>
+            {% if route_match in ['dashboard_canal_listado'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li>     
+    {% if app.user.esAdmin  %}
+    <li class="start {% if route_match in ['dashboard_canal_listado'] %}active{% endif %}">
+        <a href="{{ path('dashboard_canal_listado') }}" target="" title="{{ 'Canales' | trans }}">
+            <i class="icon-adjust">
+            </i>
+            <span class="title">
+                {{ 'Canales' | trans }}
+            </span>
+            {% if route_match in ['dashboard_canal_listado'] %}
+                <span class="selected"></span>
+            {% endif %}
+        </a>
+    </li> 
+    {% endif %}
     {#<li class="start {% if route_match in ['dashboard_trivago_busqueda'] %}active{% endif %}">
         <a href="{{ path('dashboard_trivago_busqueda') }}" target="">
             <i class="icon-search">

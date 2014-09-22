@@ -125,6 +125,16 @@ class Usuario implements AdvancedUserInterface, \Serializable
    * )
    */
   protected $usuario_roles;  
+  
+  /**
+   * 
+   * @ORM\ManyToMany(targetEntity="Canal")
+   * @ORM\JoinTable(name="usuario_canal",
+   *     joinColumns={@ORM\JoinColumn(name="usuario_id", referencedColumnName="id", onDelete="cascade")},
+   *     inverseJoinColumns={@ORM\JoinColumn(name="canal_id", referencedColumnName="id")}
+   * )
+   */
+  protected $canales;    
 
     
     public function serialize()
@@ -668,5 +678,47 @@ class Usuario implements AdvancedUserInterface, \Serializable
     public function getConsultas()
     {
         return $this->consultas;
+    }
+
+    /**
+     * Add canales
+     *
+     * @param \Encuesta\ModeloBundle\Entity\Canal $canales
+     * @return Usuario
+     */
+    public function addCanale(\Encuesta\ModeloBundle\Entity\Canal $canales)
+    {
+        $this->canales[] = $canales;
+
+        return $this;
+    }
+
+    /**
+     * Remove canales
+     *
+     * @param \Encuesta\ModeloBundle\Entity\Canal $canales
+     */
+    public function removeCanale(\Encuesta\ModeloBundle\Entity\Canal $canales)
+    {
+        $this->canales->removeElement($canales);
+    }
+
+    /**
+     * Get canales
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCanales()
+    {
+        return $this->canales;
+    }
+    
+    public function esMiCanal($id){
+        foreach($this->canales as $canal){
+            if($canal->getId() == $id)
+                return true;
+        }
+        
+        return false;
     }
 }

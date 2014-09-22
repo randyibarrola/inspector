@@ -31,7 +31,7 @@
         });
     </script>
 {% endblock %}
-{% block page_title %}{{ 'Consultas' | trans }} <small>{{ 'listado' | trans }}</small>{% endblock %}
+{% block page_title %}{{ 'Canales' | trans }} <small>{{ 'listado' | trans }}</small>{% endblock %}
 {% block breadcrumb_list %}
     {{ parent() }}
     <li>
@@ -49,13 +49,13 @@
     <!-- BEGIN SAMPLE TABLE PORTLET-->
     <div class="portlet box purple">
         <div class="portlet-title">
-            <div class="caption"><i class="icon-tags"></i>{{ 'Listado de canales' | trans }}</div>
+            <div class="caption"><i class="icon-tags"></i>{{ 'Listado de mis canales para consultas' | trans }}</div>
             <div class="tools">
                 <a href="javascript:;" class="collapse"></a>
             </div>
             <div class="actions">
-                <a class="btn purple table-actions-new block-portlet" href="{{ path('dashboard_canal_nuevo') }}">
-                    <i class="icon-plus"></i> <span class="hidden-phone">{{ 'Nuevo canal' | trans }}</span>
+                <a class="btn purple table-actions-new block-portlet" href="{{ path('dashboard_usuario_canal_editar') }}">
+                    <i class="icon-plus"></i> <span class="hidden-phone">{{ 'Editar mis canales' | trans }}</span>
                 </a>
                 <div class="btn-group table-actions-columns hidden-480">
                     <a data-toggle="dropdown" href="#" class="btn">
@@ -88,8 +88,8 @@
                         <td>{{ obj.nombre }}</td>                                             
                         <td>
                             <div class="hidden-print">                                
-                                <a class="btn mini green icn-only block-portlet" href="{{ path('dashboard_canal_editar', { 'id': obj.id }) }}" title="{{ 'Editar' | trans }}"><i class="icon-edit icon-white"></i></a>
-                                <a class="btn mini green icn-only block-portlet" title="{{ 'Eliminar' | trans }}" href="{{ path('dashboard_canal_eliminar', { 'id': obj.id }) }}" title="{{ 'Eliminar' | trans }}"><i class="icon-trash icon-white"></i></a>
+                                <a class="btn mini green icn-only block-portlet" href="{{ path('dashboard_usuario_canal_editar', { 'id': obj.id }) }}" title="{{ 'Editar' | trans }}"><i class="icon-edit icon-white"></i></a>
+                                <a class="btn mini green icn-only block-portlet" title="{{ 'Eliminar' | trans }}" href="{{ path('dashboard_usuario_canal_eliminar', { 'id': obj.id }) }}" title="{{ 'Eliminar' | trans }}"><i class="icon-trash icon-white"></i></a>
                                 <input type="hidden" value="{{ loop.index }}" class="table-row-index" />
                             </div>
                         </td>

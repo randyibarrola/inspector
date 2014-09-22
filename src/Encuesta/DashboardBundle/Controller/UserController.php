@@ -255,4 +255,87 @@ class UserController extends Controller
             'form' => $form->createView()
         ));
     }    
+    
+    public function canalesAction()
+    {               
+        $list = $this->getUser()->getCanales();
+        return $this->render('DashboardBundle:User:canales.html.twig', array(
+            'list' => $list            
+        ));
+    } 
+    
+    public function editarCanalesAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $canales = $em->getRepository('ModeloBundle:Canal')->findAll();
+        $misCanales = $this->getUser()->getCanales();
+        $response = $this->get('dashboard.ajaxresponse');
+        
+        if($this->getRequest()->getMethod() == 'POST'){
+            $usuario = $this->getUser();
+            $actuales = $usuario->getCanales();
+            foreach($actuales as $actual){
+                $usuario->removeCanale($actual);
+            }
+            $em->persist($usuario);
+            $em->flush();
+            
+            $canales = $this->getRequest()->get('canales');
+            foreach($canales as $canal_id){
+                $canal = $em->getRepository('ModeloBundle:Canal')->find($canal_id);
+                $usuario->addCanale($canal);
+            }    
+            $em->persist($usuario);
+            $em->flush();
+            
+            $response->setUrl( $this->generateUrl('dashboard_usuario_canal') );
+            $response->setMessage('La consulta se ha guardado satisfactoriamente');
+            
+            $sResponse = new Response(json_encode($response->response()));
+            $sResponse->headers->set('Content-Type', 'application/json; charset=utf-8');
+
+            return $sResponse;            
+        }
+        
+        
+        return $this->render('DashboardBundle:User:editarCanales.html.twig', array(
+            'list' => $misCanales,
+            'canales' => $canales
+        ));
+    } 
+    
+    public function canalEliminarAction()
+    {
+        $response = $this->get('dashboard.ajaxresponse');
+        $em = $this->getDoctrine()->getManager();
+        $translator = $this->get('translator');
+
+        try {
+            $id = $this->getRequest()->get('id');
+            
+            
+            $obj = $em->getRepository('ModeloBundle:Canal')->find($id);
+
+            if(!$obj) {
+                $response->setHttpCode(500);
+                $response->setMessage($translator->trans('El canal que intenta eliminar no existe'));
+            }
+            else {
+                $user = $this->getUser();
+                $user->removeCanale($obj);
+                $em->persist($user);
+                $em->flush();
+
+                $response->setMessage($translator->trans('El se ha eliminado satisfactoriamente'));
+                $response->setDataHolder(array('route' => $this->get('router')->generate('dashboard_usuario')));
+            }
+            
+        }
+        catch(\Exception $e) {
+            $response->setHttpCode(500);
+            $response->setMessage($translator->trans('Lo sentimos, ha ocurrido un error'));
+        }
+
+        return $this->redirect($this->generateUrl( 'dashboard_usuario_canal'));
+    }    
 }

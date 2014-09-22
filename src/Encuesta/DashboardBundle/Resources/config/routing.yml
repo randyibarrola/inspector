@@ -117,9 +117,23 @@ dashboard_canal_editar:
         
 dashboard_canal_nuevo:
     pattern:  /canal/nuevo
-    defaults: { _controller: DashboardBundle:Canal:new }        
-        
-
+    defaults: { _controller: DashboardBundle:Canal:new }  
+    
+dashboard_canal_listado:
+    pattern:  /canal/listado
+    defaults: { _controller: DashboardBundle:Canal:listado }     
+    
+dashboard_usuario_canal:
+    pattern:  /usuario/canal
+    defaults: { _controller: DashboardBundle:User:canales }    
+    
+dashboard_usuario_canal_editar:
+    pattern:  /usuario/canal/editar
+    defaults: { _controller: DashboardBundle:User:editarCanales }
+    
+dashboard_usuario_canal_eliminar:
+    pattern:  /usuario/canal/eliminar
+    defaults: { _controller: DashboardBundle:User:canalEliminar }    
 
 dashboard_hompage:
     pattern:  /
